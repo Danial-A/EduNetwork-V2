@@ -49,7 +49,7 @@ module.exports.add_new_user = async (req,res)=>{
    }); 
    newUser.save()
    .then(()=> res.json("User Added to database"))
-   .catch((err)=>{res.status(400).json("Error: "+ err)})
+   .catch((err)=>{res.status(400).json({error: err, message:"Server failed to respond" })})
 }
 
 
@@ -126,7 +126,12 @@ module.exports._search_by_id = (req,res)=>{
     .catch(err=> res.json(err))
 }
 
-
+//Delete user account
+module.exports.delete_user_account = (req,res)=>{
+    User.findByIdAndDelete(req.params.id)
+    .then(res.json("User account deleted"))
+    .catch(err=> res.status(400).json({error:err, message:"Error deleting user account"}))
+}
 
 //Delete all users
 module.exports.nuke = (req,res)=>{

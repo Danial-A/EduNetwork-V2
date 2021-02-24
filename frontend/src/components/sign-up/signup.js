@@ -29,10 +29,12 @@ function SignUp(props) {
     const onSubmit =( values, onSubmitProps)=>{
         // setRedirect(true);
         axios.post('http://localhost:5000/users/register',values)
-        .then((res)=>{console.log(res.data)})
+        .then((res)=>{
+            window.alert('User registered')
+            console.log(res.data)})
         .catch(err =>{ console.log('Error: '+err)});
        // onSubmitProps.resetForm()
-        
+       console.log(values)
     }
     let history = useHistory();
     function redirectUser(){
@@ -48,10 +50,10 @@ function SignUp(props) {
         username: Yup.string().required('This field is required..'),
         password: Yup.string().required('This field is required..'),
         dob: Yup.string().required('This field is required..'),
-        confirmpassword: Yup.string().required('This field is required..').when("password", {
-            is:val => (val && val.length > 0 ? true : false),
-            then : Yup.string().oneOf([Yup.ref("password")], "Value must match the entered password..")
-        })
+        // confirmpassword: Yup.string().required('This field is required..').when("password", {
+        //     is:val => (val && val.length > 0 ? true : false),
+        //     then : Yup.string().oneOf([Yup.ref("password")], "Value must match the entered password..")
+        // })
     })
     const formik = useFormik({
         initialValues,
@@ -134,17 +136,7 @@ function SignUp(props) {
                                         />
                                         {formik.errors.password && formik.touched.password ? <div className = "error"><p>{formik.errors.password}</p></div> : null}
                                     </div>
-                                    <div className="col-lg-2 text-light">
-                                        <label htmlFor="confirmpassword" className = "text-light form-label">Confirm Password:</label>
-                                    </div>
-                                    <div className="col-lg-4 form-fields">
-                                        <input type="password" name="confirmpassword" id="confirmpassword" className = "form-controller"
-                                        onChange = {formik.handleChange}
-                                        value = {formik.values.confirmpassword}
-                                        onBlur = {formik.handleBlur}
-                                        />
-                                        {formik.errors.confirmpassword && formik.touched.confirmpassword ? <div className = "error"><p>{formik.errors.confirmpassword}</p></div> : null}
-                                    </div>
+                                    
                                     <div className="row section-divider dob">
                                         <div className="col-lg-4 text-light">
                                             <label htmlFor="date" className="text-light form-label dob-label">Select DOB</label>

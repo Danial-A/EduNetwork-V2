@@ -4,6 +4,7 @@ import Footer from '../components/footer-section/footer'
 import axios from 'axios'
 import Post from '../components/post-component/post'
 import './UserProfile.css'
+import YTPage from '../components/YT-Data/YT-Data-API-Result'
 function UserHomePage() {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(false);
@@ -22,6 +23,7 @@ function UserHomePage() {
     return (
         <div style ={{backgroundColor: '#1c2237'}}>
             <NavigationBar/>
+            <YTPage/>
             <Post posts = {posts} loading= {loading} />
             <Footer/>
         </div>

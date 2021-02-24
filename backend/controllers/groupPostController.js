@@ -68,3 +68,61 @@ module.exports.get_group_posts = (req,res)=>{
     })
     .catch(err=> res.status(400).json({error:err, message: "error finding the group"}))
 }
+
+//Add admins
+module.exports.add_admins = (req,res)=>{
+    const newAdmin = {
+        userid: req.body.userid
+    };
+    Group.findById(req.params.id)
+    .then(group=>{
+        group.admins.push(newAdmin)
+        group.save()
+        res.json("admin added")
+    }).catch(err=> res.status(400).json({error:err,message:"Error finding the post"}))
+}
+
+// Remove admin
+module.exports.remove_admin = (req,res)=>{
+    const userid = req.body.userid
+    Group.findById(req.params.id)
+    .then(group=>{
+        const admin = group.admins.filter(m=> m.userid === userid)
+        if(admin.length === 0){
+            res.json("No user found in group admins list")
+        }else{
+            group.admins.id(admin[0]._id).remove()
+            group.save()
+            res.json("admin removed successfully")
+        }
+    }).catch(err => res.status(400).json({error:err, message:"Error finding the gorup"}))
+}
+
+//Add members
+module.exports.add_members = (req,res)=>{
+    const newMember = {
+        userid: req.body.userid
+    };
+    Group.findById(req.params.id)
+    .then(group=>{
+        group.members.push(newMember)
+        group.save()
+        res.json("Member added")
+    }).catch(err=> res.status(400).json({error:err,message:"Error finding the group"}))
+}
+
+//remove members
+module.exports.remove_member = (req,res)=>{
+    const userid = req.body.userid
+    Group.findById(req.params.id)
+    .then(group=>{
+        const member = group.members.filter(m=> m.userid === userid)
+        if(member.length === 0){
+            res.json("No user found in group members list")
+        }else{
+            group.members.id(member[0]._id).remove()
+            group.save()
+            res.json("Member removed successfully")
+        }
+    }).catch(err => res.status(400).json({error:err, message:"Error finding the gorup"}))
+}

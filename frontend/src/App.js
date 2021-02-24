@@ -6,6 +6,7 @@ import SignUp from './components/sign-up/signup';
 import UserProfile from './pages/UserProfile';
 import UserHomePage from './pages/UserHomePage';
 import GroupPage from './pages/GroupPage'
+import YoutubeSearchPage from './pages/YoutubeSearchPage'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Route exact path = "/profile" component = {UserProfile}/>
       <Route exact path = "/home" component = {UserHomePage}/>
       <Route exact path = "/group/:id" component = {GroupPage}/>
+      <Route exact path = "/yt/search" component = {YoutubeSearchPage}/>
     </Switch>
   );
 }

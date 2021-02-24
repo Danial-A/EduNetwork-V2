@@ -23,4 +23,6 @@ router.get('/username', userController.search_by_username)
 //Find user by id
 router.get('/:id', userController._search_by_id)
 
+//Delete user account
+
 module.exports = router

@@ -10,18 +10,28 @@ import './post.css'
 import PostComment from '../comments/comment'
 import 'tippy.js/dist/tippy.css'
 import Cookies from 'js-cookie'
+import axios from 'axios'
 
 function Post({posts, loading}) {
-
+    const username = Cookies.get('username')
     const [liked, setLiked] = useState(false)
+
     const checkLike = (postid)=>{
-    Axios.post(`http://localhost:5000/posts/${postid}/like`, {username:Cookies.get('username')})
-    .then(res=>{
-        console.log(res.data)
-    }).catch(err=>{
-        console.log(err)
-    })
-  
+        axios.post(`http://localhost:5000/posts/${postid}/like`,{username})
+        .then(response=> {
+
+            if(response.status === 200){
+                // setLiked(true)
+                if(response.data === 'liked') {
+                    setLiked(true)
+                   
+                }
+                else {
+                    setLiked(false)
+                }
+            }
+        })
+        .catch(err=> console.log(err))
     }
 
 
@@ -29,6 +39,7 @@ function Post({posts, loading}) {
         Axios.delete(`http://localhost:5000/posts/${postid}`)
         .then(res=>{
             window.alert("Post Deleted");
+            
             console.log(res.data)
         })
         .catch(err=>{console.log(err)})
@@ -56,7 +67,7 @@ function Post({posts, loading}) {
                             <div className="post-heading-section">
                                 <h4>{post.title}</h4>
                             </div>
-                        </div>
+                        </div> 
                         <div className="co-md-4">
                         <div className="delete-icons-row">
                             <Link ><FontAwesomeIcon icon = {faTrash} onClick = {()=>DeletePost(post._id)}/></Link>

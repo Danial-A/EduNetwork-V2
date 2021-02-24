@@ -10,6 +10,7 @@ import ProfileInformation from '../components/Profile-Information/ProfileInforma
 import UserInformation from '../components/Profile-Information/UserInformation'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import UserPost from '../components/create-post/create-post'
+import Cookies from 'js-cookie'
 
 
 function UserProfile() {
@@ -25,7 +26,7 @@ function UserProfile() {
   
         const fetchPosts = async ()=>{
             setLoading(true);
-            const response = await axios.post('http://localhost:5000/posts/user/posts', {"author": "dani123"});
+            const response = await axios.post('http://localhost:5000/posts/user/posts', {"author": Cookies.get('username')});
             setPosts(response.data);
             setLoading(false)
         }

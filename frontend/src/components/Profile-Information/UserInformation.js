@@ -1,10 +1,13 @@
 import { faUser, faEnvelope, faCalendar, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, {useState, useEffect, useRef} from 'react'
+import {Modal, Button} from 'react-bootstrap'
+import React, {useState, useEffect} from 'react'
 import Cookies from 'js-cookie'
 import axios from 'axios'
-
 import './UserInformation.css'
+
+
+
 
 function UserInformation() {
     const user = Cookies.get('user')
@@ -17,6 +20,7 @@ function UserInformation() {
         getUserInfo()
         
     }, [])
+
     return (
         <div className = "user-information-section">
             <div className ="user-information-heading"> 
@@ -27,12 +31,12 @@ function UserInformation() {
                     <li><FontAwesomeIcon icon = {faUser} className = "icon"/>Name: <pre> {User.firstname} {User.lastname}</pre></li>
                     <li><FontAwesomeIcon icon = {faUsers} className = "icon"/>Username:<pre> {User.username}</pre></li>
                     <li><FontAwesomeIcon icon = {faEnvelope} className = "icon"/>Email:<pre> {User.emailid}</pre></li>
-                    <li><FontAwesomeIcon icon = {faCalendar} className = "icon"/>DOB:<pre> 23-08-1997</pre></li>
+                    <li><FontAwesomeIcon icon = {faCalendar} className = "icon"/>DOB:<pre> {User.dob}</pre></li>
                    
                 </ul>
             </div>
             <div className="edit-btn">
-                <button>Edit Profile Information</button>
+                <button >Edit Profile Information</button>
             </div>
         </div>
     )

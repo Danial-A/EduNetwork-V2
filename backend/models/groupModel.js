@@ -9,7 +9,7 @@ const groupModel = new schema({
     },
     admins:[
         {
-            userId:{
+            userid:{
                 type:String,
                 required:true,
                 unique:true,
@@ -30,7 +30,7 @@ const groupModel = new schema({
 
     groupMembers:[
         {
-            userId:{
+            userid:{
                 type:String,
                 required:true,
                 unique:true,

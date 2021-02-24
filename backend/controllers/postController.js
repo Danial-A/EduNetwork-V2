@@ -43,11 +43,11 @@ module.exports.like_unlike = (req,res)=>{
         if(like_found.length === 0){
             post.likes.push(newLike)
             post.save()
-            res.json(`Post liked by ${username}`)
+            res.json('liked')
         }else{
             post.likes.id(like_found[0]._id).remove()
             post.save()
-            res.json(`Post unliked by ${username}`)
+            res.json("unliked")
         }
     })
     .catch(err=> res.status(400).json("Error Finding the post ",err))
@@ -98,10 +98,31 @@ module.exports.update_comment = (req,res, next)=>{
     .catch(err=> res.status(404).json("Error finding the post ",err))
 }
 
+//Get all comments on a post
+module.exports.get_all_comments = (req,res)=>{
+    Post.findById(req.params.id)
+    .then(post => res.json(post.comments))
+    .catch(err=> res.json({Error: err, message:"Error locating the post"}))
+}
+
 //Get posts for a specific user
 module.exports.user_posts = (req,res)=>{
     Post.find({"author":req.body.author}).sort({createdAt:-1}).exec((err,posts)=>{
         if(err)  res.status(400).json({error:err, message:"Error locating the posts"})
         else res.json(posts)
     })
+}
+
+//Delete all posts by a user
+module.exports.delete_all_user_posts = (req,res)=>{
+    Post.deleteMany({"author":  req.body.username})
+    .then(res.json(`All posts by ${req.body.username} have been deleted`))
+    .catch(err=> res.status(400).json({error: err, message:"Error deleting the user posts"}))
+}
+
+//Delete a single post by id
+module.exports.delete_a_post_by_id = (req,res)=>{
+    Post.findByIdAndDelete(req.params.id)
+        .then(()=>{res.json("Post Deleted")})
+        .catch(err=> res.status(400).json('Error: '+err))
 }
