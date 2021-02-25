@@ -140,6 +140,13 @@ module.exports.nuke = (req,res)=>{
     .catch(err=>res.status(400).json("Error deploying the nuke...", err))
 }
 
+//Update User information
+module.exports.update_user_information = (req,res)=>{
+    User.findByIdAndUpdate(req.params.id, req.body)
+    .then(res.json("User information updated"))
+    .catch(err=> res.status(400).json({error:err,message:"Error updating user information"}))
+}
+
 
 
 

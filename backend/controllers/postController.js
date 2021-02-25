@@ -126,3 +126,5 @@ module.exports.delete_a_post_by_id = (req,res)=>{
         .then(()=>{res.json("Post Deleted")})
         .catch(err=> res.status(400).json('Error: '+err))
 }
+
+//Update existing post

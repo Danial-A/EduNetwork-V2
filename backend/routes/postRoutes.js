@@ -4,12 +4,15 @@ const tokenValidation = require('../validation/tokenValidation')
 
 //Get all posts 
 router.get('/', postController.get_all)
-
 //Delete all posts
 router.post('/nuke', postController.nuke)
-
 //Add new post
 router.post('/add', postController.add_post)
+//Delete posts by a specific user
+router.delete('/user/delete', postController.delete_all_user_posts)
+//Delete a single post by id
+router.delete('/delete/:id', postController.delete_a_post_by_id)
+router.post('/update/:id')
 
 //Post Like and Unlike
 router.post("/:id/like", postController.like_unlike)
@@ -27,11 +30,7 @@ router.get("/:id/comments", postController.get_all_comments)
 router.post('/user/posts', postController.user_posts)
 
 
-//Delete posts by a specific user
-router.delete('/user/delete', postController.delete_all_user_posts)
 
-//Delete a single post by id
-router.delete('/delete/:id', postController.delete_a_post_by_id)
 
 
 module.exports = router

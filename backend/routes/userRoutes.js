@@ -24,5 +24,8 @@ router.get('/username', userController.search_by_username)
 router.get('/:id', userController._search_by_id)
 
 //Delete user account
+router.delete('/:id/delete', userController.delete_user_account)
 
+//Update user information
+router.post('/:id/update', userController.update_user_information)
 module.exports = router

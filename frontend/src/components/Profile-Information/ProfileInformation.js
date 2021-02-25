@@ -1,12 +1,22 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import '../../pages/UserProfile.css'
 import {FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faThumbsUp, faUsers, faTasks} from '@fortawesome/free-solid-svg-icons'
 import {Link } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import axios from 'axios'
 
 function ProfileInformation() {
-    
+
+    const [posts, setPosts] = useState([])
+    useEffect(()=>{
+        axios.post('http://localhost:5000/posts/user/posts', {author: Cookies.get('username')})
+        .then(posts=> {
+            console.log(posts)
+            setPosts(posts)
+        })
+        .catch(err => console.log(err))
+    },[])
     return (
         <div className="user-info">
             <div className="user-heading"> 
@@ -14,8 +24,8 @@ function ProfileInformation() {
             </div>
             <div className="information-section">
                 <ul>
-                    <li><Link><FontAwesomeIcon icon = {faEdit} className = "icon"/>Posts</Link></li>
-                    <li><Link><FontAwesomeIcon icon = {faThumbsUp} className = "icon"/>Likes</Link></li>
+                    <li><Link><FontAwesomeIcon icon = {faEdit} className = "icon"/>Posts {(posts.length)}</Link></li>
+                    <li><Link><FontAwesomeIcon icon = {faThumbsUp} className = "icon"/>Likes </Link></li>
                     <li><Link to = '/group'><FontAwesomeIcon icon = {faUsers} className = "icon"/>Groups</Link></li>
                 </ul>
              <div className="groups-section">
