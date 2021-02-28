@@ -30,7 +30,4 @@ router.get("/:id/comments", postController.get_all_comments)
 router.post('/user/posts', postController.user_posts)
 
 
-
-
-
 module.exports = router
