@@ -80,29 +80,29 @@ module.exports.user_login = async (req,res)=>{
 }
 //Following route
 module.exports.following_follower = (req,res)=>{
-    const username = req.body.username;
-    const newFollowing = {username}
+    const userid = req.body.userid;
+    const newFollowing = {userid}
     User.findById(req.params.id)
     .then(user=>{
-        const user_found = user.following.filter(u => u.username === username)
+        const user_found = user.following.filter(u => u.userid === userid)
         if(user_found.length === 0) {
-            User.findOne({"username":username}, (err,targetUser)=>{
+            User.findOne({"_id":userid}, (err,targetUser)=>{
                 if(err) res.status(400).json({error: err})
                 if(targetUser === null) res.json("No user found")
 
                 else {
                     user.following.push(newFollowing)
-                    const newFollower = {username: user.username}
+                    const newFollower = {userid: user.userid}
                     targetUser.followers.push(newFollower);
-                    user.save().catch(err=> res.status(400).json("Error adding user to following..",err))
-                    targetUser.save().catch(err=> res.status(400).json({error: err, message:"Error adding user to followers"}))
+                    user.save().catch(err=> res.json("Error adding user to following..",err))
+                    targetUser.save().catch(err=> res.json({error: err, message:"Error adding user to followers"}))
                     res.json("User added to followers and following")
                 }
                 
             })
         }
         else {
-            res.json(`You are already following ${username}`)
+            res.json(`You are already following ${userid}`)
         }
     })
     .catch(err=>{res.status(400).json("Error: "+err)})
@@ -142,9 +142,17 @@ module.exports.nuke = (req,res)=>{
 
 //Update User information
 module.exports.update_user_information = (req,res)=>{
-    User.findByIdAndUpdate(req.params.id, req.body)
-    .then(res.json("User information updated"))
-    .catch(err=> res.status(400).json({error:err,message:"Error updating user information"}))
+    User.findByIdAndUpdate(req.params.id, req.body, function(err,result){
+        if(err) return res.status(400).json({
+            error: err,
+            message:"unable to update user information"
+        })
+        else return res.json({
+            result,
+            message:"User updated successfully"
+        })
+    })
+   
 }
 
 

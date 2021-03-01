@@ -18,7 +18,8 @@ function UserPost(TotalPosts) {
     const onSubmit = values =>{
         axios.post('http://localhost:5000/posts/add', values)
         .then(res =>{
-            window.alert("Post Added!");
+            // window.alert("Post Added!");
+            console.log(res)
             setPosts([...totalPosts])
         })
         .catch(err =>{ console.log("Error: "+err)})

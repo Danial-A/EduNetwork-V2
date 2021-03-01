@@ -4,6 +4,9 @@ import {Modal, Button} from 'react-bootstrap'
 import React, {useState, useEffect} from 'react'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import { useFormik} from 'formik'
+import * as Yup from 'yup'
+import moment from 'moment'
 import './UserInformation.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -28,6 +31,36 @@ function UserInformation() {
         
     }, [])
 
+
+    //Edit user information
+
+    const initialValues = {
+        firstname:User.firstname,
+        lastname:User.lastname,
+        username:User.username,
+        emailid:User.emailid,
+        dob:User.dob
+    }
+    const onSubmit = (values)=>{
+        axios.post(`http://localhost:5000/users/${user}/update`, values)
+        .then(response=> console.log(response))
+        .catch(err=> console.log(err))
+        console.log(values)
+    }
+    const validationSchema = Yup.object({
+       firstname:Yup.string().required("First name is required..."),
+       lastname:Yup.string().required("Last name is required..."),
+       username:Yup.string().required("Username is required..."),
+       emailid : Yup.string().required('Email id is required...'),
+       dob: Yup.date().required("DOB is required")
+    })
+    const formik = useFormik({
+        initialValues,
+        onSubmit,
+        validationSchema
+    })
+
+    //console.log(user)
     return (
         <div className = "user-information-section">
             <div className ="user-information-heading"> 
@@ -38,7 +71,7 @@ function UserInformation() {
                     <li><FontAwesomeIcon icon = {faUser} className = "icon"/>Name: <pre> {User.firstname} {User.lastname}</pre></li>
                     <li><FontAwesomeIcon icon = {faUsers} className = "icon"/>Username:<pre> {User.username}</pre></li>
                     <li><FontAwesomeIcon icon = {faEnvelope} className = "icon"/>Email:<pre> {User.emailid}</pre></li>
-                    <li><FontAwesomeIcon icon = {faCalendar} className = "icon"/>DOB:<pre> {User.dob}</pre></li>
+                    <li><FontAwesomeIcon icon = {faCalendar} className = "icon"/>DOB:<pre> {moment(User.dob).format("MMMM DD YYYY")}</pre></li>
                    
                 </ul>
             </div>
@@ -50,35 +83,66 @@ function UserInformation() {
                 <Modal.Title >UPDATE USER INFORMATION</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form>
+                    <form onSubmit = {formik.handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="firstname">First Name: </label>
-                            <input type="text" className = "form-control" id = "firstname" placeholder = "Enter the firstname.." />
+                            <input 
+                            type="text" name = "firstname"
+                            className = "form-control" id = "firstname" 
+                            placeholder = "Enter the firstname.."
+                            value = {formik.values.firstname}
+                            onChange = {formik.handleChange}
+                            onBlur = {formik.handleBlur}
+                             />
                         </div>
                         <div className="form-group">
                             <label htmlFor="lastname">Last Name: </label>
-                            <input type="text" className = "form-control" id = "lastname" placeholder = "Enter the lastname.." />
+                            <input type="text" name = "lastname"
+                            className = "form-control" id = "lastname" 
+                            placeholder = "Enter the lastname.." 
+                            value = {formik.values.lastname}
+                            onChange = {formik.handleChange}
+                            onBlur = {formik.handleBlur}
+                            />
                         </div>
                         <div className="form-group">
                             <label htmlFor="username"> Username: </label>
-                            <input type="text" className = "form-control" id = "username" placeholder = "Enter the username.." />
+                            <input type="text" name = "username"
+                            className = "form-control" id = "username"
+                            placeholder = "Enter the username.." 
+                            value = {formik.values.username}
+                            onChange = {formik.handleChange}
+                            onBlur = {formik.handleBlur}
+                            />
                         </div>
                         <div className="form-group">
                             <label htmlFor="email">Email ID: </label>
-                            <input type="email" className = "form-control" id = "email" placeholder = "Enter the email.." />
+                            <input type="email" name = "emailid"
+                            className = "form-control" id = "email" 
+                            placeholder = "Enter the email.." 
+                            value = {formik.values.emailid}
+                            onChange = {formik.handleChange}
+                            onBlur = {formik.handleBlur}
+                            />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="dob">Last Name: </label>
-                            <input type="date" className = "form-control" id = "dob" />
+                            <label htmlFor="dob">Date of Birth: </label>
+                            <input type="date" name = "dob"
+                            className = "form-control" 
+                            id = "dob" 
+                            value = {formik.values.dob}
+                            onChange = {formik.handleChange}
+                            onBlur = {formik.handleBlur}
+                            />
                         </div>
+                        <Button type = "submit" variant = "danger">
+                            save changes
+                        </Button>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Close
-                </Button>
-                <Button variant="danger" onClick={handleClose}>
-                    Save Changes
                 </Button>
                 </Modal.Footer>
             </Modal>

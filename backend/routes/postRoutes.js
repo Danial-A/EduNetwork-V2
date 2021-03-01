@@ -12,7 +12,8 @@ router.post('/add', postController.add_post)
 router.delete('/user/delete', postController.delete_all_user_posts)
 //Delete a single post by id
 router.delete('/delete/:id', postController.delete_a_post_by_id)
-router.post('/update/:id')
+//Update post by id
+router.post('/update/:id', postController.update_post)
 
 //Post Like and Unlike
 router.post("/:id/like", postController.like_unlike)

@@ -1,21 +1,29 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import Axios from 'axios'
 import Tippy from '@tippy.js/react'
 import { faThumbsUp, faComment, faShare, faSave, faTrash,faEdit,faArchive } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './post.css'
 import PostComment from '../comments/comment'
-import 'tippy.js/dist/tippy.css'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import {Modal, Button} from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './post.css'
+import 'tippy.js/dist/tippy.css'
+
 
 function Post({posts, loading}) {
     const username = Cookies.get('username')
     const [liked, setLiked] = useState(false)
 
+    //Handle close/open Modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    
     const checkLike = (postid)=>{
         axios.post(`http://localhost:5000/posts/${postid}/like`,{username})
         .then(response=> {
@@ -48,6 +56,8 @@ function Post({posts, loading}) {
     if(loading){
         return <h2>Loading...</h2>
     }
+
+  
     return (
         <div className="container-fluid posts-section">
             {
@@ -70,8 +80,8 @@ function Post({posts, loading}) {
                         </div> 
                         <div className="co-md-4">
                         <div className="delete-icons-row">
-                            <Link ><FontAwesomeIcon icon = {faTrash} onClick = {()=>DeletePost(post._id)}/></Link>
-                            <Link><FontAwesomeIcon icon = {faEdit} /></Link>
+                            <Link ><FontAwesomeIcon  icon = {faTrash} onClick = {()=>DeletePost(post._id)}/></Link>
+                            <Link><FontAwesomeIcon icon = {faEdit} onClick = {handleShow} /></Link>
                             <Link><FontAwesomeIcon icon = {faArchive}/></Link>
                     </div>
                         </div>
@@ -97,6 +107,20 @@ function Post({posts, loading}) {
                     
                 ))
             }
+            <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
     )
 }

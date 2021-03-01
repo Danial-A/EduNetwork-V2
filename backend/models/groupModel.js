@@ -19,7 +19,7 @@ const groupModel = new schema({
     ],
     posts: [
         {
-            postID:{
+            postid:{
                 type:String,
                 required:true,
                 unique:true,

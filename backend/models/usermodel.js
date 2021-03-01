@@ -45,7 +45,7 @@ const userSchema = new Schema({
     }
     ,followers:[
         {
-            username:{
+            userid:{
                 type:String,
                 trim:true,
                 required:true,
@@ -56,7 +56,7 @@ const userSchema = new Schema({
     ],
     following:[
         {
-            username:{
+            userid:{
                 type:String,
                 trim:true,
                 required:true,
@@ -67,7 +67,7 @@ const userSchema = new Schema({
     ]
     ,groups:[
         {
-            groupname:{
+            groupid:{
                 type:String,
                 required:true,
                 unique:true,

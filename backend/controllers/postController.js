@@ -128,3 +128,15 @@ module.exports.delete_a_post_by_id = (req,res)=>{
 }
 
 //Update existing post
+module.exports.update_post = (req,res)=>{
+    Post.findByIdAndUpdate(req.params.id, req.body, (err,post)=>{
+        if(err) return res.status(400).json({
+            error:err,
+            message:"Unable to update post"
+        })
+        else return res.json({
+            post,
+            message:"Post updated successfully"
+        })
+    })
+}
