@@ -27,11 +27,11 @@ function SignIn() {
     }
 
   const onSubmit = (values, onSubmitProps)=>{
-    axios.post('http://localhost:5000/users/login', values)
+    axios.post('http://localhost:8080/users/login', values)
     .then(res =>{
         console.log(res.data)
         if(res.status === 200) {
-            axios.post(`http://localhost:5000/users/${res.data.userid}`)
+            axios.post(`http://localhost:8080/users/${res.data.userid}`)
             .then(user=> console.log(user))
             .catch(err=> console.log(err))
             setLoggedIn(true)

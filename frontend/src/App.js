@@ -7,6 +7,7 @@ import UserProfile from './pages/UserProfile';
 import UserHomePage from './pages/UserHomePage';
 import GroupPage from './pages/GroupPage'
 import YoutubeSearchPage from './pages/YoutubeSearchPage'
+import PostPage from './pages/postPage'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <Route exact path = "/home" component = {UserHomePage}/>
       <Route exact path = "/group/:id" component = {GroupPage}/>
       <Route exact path = "/yt/search" component = {YoutubeSearchPage}/>
+      <Route exact path = "/user/post/:id" component = {PostPage}/>
     </Switch>
   );
 }

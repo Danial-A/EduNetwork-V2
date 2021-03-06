@@ -33,6 +33,16 @@ module.exports.add_post =async (req,res)=>{
     .catch(err=> res.status(400).json("Error creating post ",err))
 }
 
+//get post by id
+module.exports.get_post_by_id = (req,res)=>{
+    Post.findById(req.params.id)
+    .then(post=> res.json(post))
+    .catch(err=> res.status(404).json({
+        message:"Post not found",
+        error:err
+    }))
+}
+
 //Like or Unlike post
 module.exports.like_unlike = (req,res)=>{
     const username = req.body.username
@@ -102,11 +112,12 @@ module.exports.update_comment = (req,res, next)=>{
 module.exports.get_all_comments = (req,res)=>{
     Post.findById(req.params.id)
     .then(post => res.json(post.comments))
-    .catch(err=> res.json({Error: err, message:"Error locating the post"}))
+    .catch(err=> res.status(400).json({Error: err, message:"Error locating the post"}))
 }
 
 //Get posts for a specific user
 module.exports.user_posts = (req,res)=>{
+    
     Post.find({"author":req.body.author}).sort({createdAt:-1}).exec((err,posts)=>{
         if(err)  res.status(400).json({error:err, message:"Error locating the posts"})
         else res.json(posts)

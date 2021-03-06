@@ -1,35 +1,28 @@
-import React, {useState} from 'react'
-import { Modal, Button} from 'react-bootstrap'
-import SearchComponent from './Search'
+import React from 'react'
 import './yt.css'
+import {Link} from 'react-router-dom'
+import axios from 'axios'
 
-
-function YTPage() {
-    const [show,setShow] = useState(false)
-    const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true)
+function YTPage(props) {
+    const [users,setUsers] = React.useState([])
+    React.useEffect(()=>{
+        axios.get('http://localhost:8080/users/')
+        .then(res=> {
+            setUsers(res.data)
+            
+        })
+        .catch(err=> console.log(err))
+    },[])
+    console.log(props.location.path)
     return (
-        <div>
-            <Button variant="primary" onClick={handleShow}>
-                Launch demo modal
-            </Button>
-        
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/9CyObwMSHOU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                </Modal.Body>
-                <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={handleClose}>
-                    Save Changes
-                </Button>
-                </Modal.Footer>
-            </Modal>
+        <div style = {{color:"white"}}>
+            <ul>
+                {
+                    users.map(user=>(
+                        <li key = {user._id}><Link to = {`${props.location.path}/${user.user_id}`}>{user.username}</Link></li>
+                    ))
+                }
+            </ul>
           </div>
       );
 }

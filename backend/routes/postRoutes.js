@@ -26,7 +26,8 @@ router.post('/:id/comment/delete', postController.delete_comment)
 router.post('/:id/comment/update', postController.update_comment)
 //Get All comments on a post
 router.get("/:id/comments", postController.get_all_comments)
-
+//Get post by ID
+router.get('/post/:id', postController.get_post_by_id)
 //Find user posts
 router.post('/user/posts', postController.user_posts)
 

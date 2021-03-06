@@ -5,7 +5,6 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './comment.css'
-import DisplayComments from './comments-display'
 function PostComment({postid}) {
     const initialValues = {
         username: Cookies.get('username'),
@@ -18,7 +17,7 @@ function PostComment({postid}) {
 
     
     const onSubmit = (values, onSubmitProps) =>{
-         axios.post(`http://localhost:5000/posts/${postid}/comment/add`,values)
+         axios.post(`http://localhost:8080/posts/${postid}/comment/add`,values)
          .then(res => {
              console.log(res.data)
              window.alert('Comment Added!');
@@ -38,10 +37,7 @@ function PostComment({postid}) {
 
     return (
         <div>
-        <div className="comments-section">
-            <DisplayComments postid = {postid}/>
-        </div>
-            <div className ="container" style ={{borderTop:"1px solid black", padding: "15px 0"}}>
+            <div className ="container" style ={{borderTop:"1px solid white", padding: "15px 0"}}>
             <form onSubmit = {formik.handleSubmit}>
                     <label htmlFor="comment">Add a comment: </label>
                     <input type="text" className = "form-control comment-input" name = "body" id = "body"

@@ -24,7 +24,7 @@ function UserInformation() {
 
     useEffect(()=>{
             async function getUserInfo(){
-            const UserInformation =  await axios.get(`http://localhost:5000/users/${user}`)
+            const UserInformation =  await axios.get(`http://localhost:8080/users/${user}`)
             setUser(UserInformation.data)
         }
         getUserInfo()
@@ -41,11 +41,13 @@ function UserInformation() {
         emailid:User.emailid,
         dob:User.dob
     }
+    // console.log(initialValues)
     const onSubmit = (values)=>{
-        axios.post(`http://localhost:5000/users/${user}/update`, values)
-        .then(response=> console.log(response))
-        .catch(err=> console.log(err))
-        console.log(values)
+        // axios.post(`http://localhost:8080/users/${user}/update`, values)
+        // .then(response=> console.log(response))
+        // .catch(err=> console.log(err))
+        // console.log(values)
+        //console.log(values)
     }
     const validationSchema = Yup.object({
        firstname:Yup.string().required("First name is required..."),
@@ -60,7 +62,7 @@ function UserInformation() {
         validationSchema
     })
 
-    //console.log(user)
+   // console.log(formik.values)
     return (
         <div className = "user-information-section">
             <div className ="user-information-heading"> 
@@ -119,8 +121,7 @@ function UserInformation() {
                             <label htmlFor="email">Email ID: </label>
                             <input type="email" name = "emailid"
                             className = "form-control" id = "email" 
-                            placeholder = "Enter the email.." 
-                            value = {formik.values.emailid}
+                            value = {`${formik.values.emailid}`}
                             onChange = {formik.handleChange}
                             onBlur = {formik.handleBlur}
                             />
@@ -135,6 +136,7 @@ function UserInformation() {
                             onBlur = {formik.handleBlur}
                             />
                         </div>
+                        <input type="text" name="teext" id="" value = "name"/>
                         <Button type = "submit" variant = "danger">
                             save changes
                         </Button>
@@ -145,6 +147,7 @@ function UserInformation() {
                     Close
                 </Button>
                 </Modal.Footer>
+               
             </Modal>
 
             <div className="edit-btn">

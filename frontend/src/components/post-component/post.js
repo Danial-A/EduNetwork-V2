@@ -25,7 +25,7 @@ function Post({posts, loading}) {
 
     
     const checkLike = (postid)=>{
-        axios.post(`http://localhost:5000/posts/${postid}/like`,{username})
+        axios.post(`http://localhost:8080/posts/${postid}/like`,{username})
         .then(response=> {
 
             if(response.status === 200){
@@ -44,7 +44,7 @@ function Post({posts, loading}) {
 
 
     const DeletePost = (postid)=>{
-        Axios.delete(`http://localhost:5000/posts/${postid}`)
+        Axios.delete(`http://localhost:8080/posts/delete/${postid}`)
         .then(res=>{
             window.alert("Post Deleted");
             
@@ -63,7 +63,7 @@ function Post({posts, loading}) {
             {
                 posts.map(post=>(
                     
-                    <div key = {post._id} className="post-container container">
+                    <div key = {post._id} className="post-container container" >
                       <div className="row user-info-row">
                         <div className="col-md-6">
                            <span className = "user-heading">User:</span> {post.author}
@@ -79,11 +79,18 @@ function Post({posts, loading}) {
                             </div>
                         </div> 
                         <div className="co-md-4">
-                        <div className="delete-icons-row">
-                            <Link ><FontAwesomeIcon  icon = {faTrash} onClick = {()=>DeletePost(post._id)}/></Link>
-                            <Link><FontAwesomeIcon icon = {faEdit} onClick = {handleShow} /></Link>
-                            <Link><FontAwesomeIcon icon = {faArchive}/></Link>
-                    </div>
+                            
+                              {post.author === username ? 
+                                <div className="delete-icons-row">
+                                  <Link ><FontAwesomeIcon  icon = {faTrash} onClick = {()=>DeletePost(post._id)}/></Link>
+                                  <Link><FontAwesomeIcon icon = {faEdit} onClick = {handleShow} /></Link>
+                                  <Link><FontAwesomeIcon icon = {faArchive}/></Link>
+                                </div> 
+                              :
+                              <div></div>
+                            
+                            }
+                            
                         </div>
                       </div>
                       <div className="row">
@@ -96,13 +103,13 @@ function Post({posts, loading}) {
                       <div className="row">
                         <div className="col-md-6 like-icons-row">
                             <Tippy content = {`${post.likes.length} ${post.likes.length > 1 ? ('Likes'):('Like')}`}><Link><FontAwesomeIcon icon = {faThumbsUp} onClick = {()=> checkLike(post._id)} className = {`${liked ? ('liked'): ('disliked')}`}/></Link></Tippy>
-                            <Tippy content = {`${post.comments.length} ${post.comments.length > 1 ? ('Comments'):('Comment')}`}><Link><FontAwesomeIcon icon = {faComment}/></Link></Tippy>
+                            <Tippy content = {`${post.comments.length} ${post.comments.length > 1 ? ('Comments'):('Comment')}`}><Link to = {`/user/post/${post._id}`}><FontAwesomeIcon icon = {faComment}/></Link></Tippy>
                             <Link><FontAwesomeIcon icon = {faShare}/></Link>
                             <Link><FontAwesomeIcon icon = {faSave}/></Link>
                         </div>
                         
                       </div>
-                      <PostComment postid = {post._id}/>
+                      
                     </div>
                     
                 ))

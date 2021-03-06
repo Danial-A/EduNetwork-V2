@@ -16,7 +16,7 @@ function UserPost(TotalPosts) {
         postType: 'profile'
     }
     const onSubmit = values =>{
-        axios.post('http://localhost:5000/posts/add', values)
+        axios.post('http://localhost:8080/posts/add', values)
         .then(res =>{
             // window.alert("Post Added!");
             console.log(res)

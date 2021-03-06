@@ -92,11 +92,14 @@ module.exports.following_follower = (req,res)=>{
 
                 else {
                     user.following.push(newFollowing)
-                    const newFollower = {userid: user.userid}
-                    targetUser.followers.push(newFollower);
-                    user.save().catch(err=> res.json("Error adding user to following..",err))
-                    targetUser.save().catch(err=> res.json({error: err, message:"Error adding user to followers"}))
-                    res.json("User added to followers and following")
+                    user.save().then(()=>{
+                        const newFollower = {userid : req.params.id}
+                        targetUser.followers.push(newFollower);
+                        targetUser.save().catch(err=> res.json({error: err, message:"Error adding user to followers"}))
+                        res.json("User added to followers and following")
+                    }).catch(err=> res.json("Error adding user to following..",err))
+                    
+                    
                 }
                 
             })
@@ -155,7 +158,58 @@ module.exports.update_user_information = (req,res)=>{
    
 }
 
-
+//Get All followers
+module.exports.get_followers = (req,res)=>{
+    User.findById(req.params.id, "followers", (err,result)=>{
+        if(err) res.status(400).json({
+            message:"Error retrieving the followers",
+            error:err
+        })
+        else{
+            const userIdArray = result.followers.map(user=> user.userid) 
+            User.find({
+                '_id':{
+                    $in:userIdArray
+                }
+            }).then(result=>{
+                res.json(result)
+            }).catch(err=>{
+                res.status(400).json({
+                    error:err,
+                    message:"Error finding the followers for this user"
+                })
+            })
+            
+        }
+    })
+    
+}
+//Get all following
+module.exports.get_following = (req,res)=>{
+    User.findById(req.params.id, "following", async (err,result)=>{
+        if(err) res.status(400).json({
+            message:"Error retrieving the following users",
+            error:err
+        })
+        else{
+            const userIdArray =await result.following.map(user=> user.userid) 
+            User.find({
+                '_id':{
+                    $in:userIdArray
+                }
+            }).then(result=>{
+                res.json(result)
+            }).catch(err=>{
+                res.status(400).json({
+                    error:err,
+                    message:"Error finding the following users for this user"
+                })
+            })
+            
+        }
+    })
+    
+}
 
 
 

@@ -5,18 +5,37 @@ import { faEdit, faThumbsUp, faUsers, faTasks} from '@fortawesome/free-solid-svg
 import {Link } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import {Tabs, Tab} from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function ProfileInformation() {
-
+    const [followers, setFollowers] = useState([])
+    const [following, setFollowing] = useState([])
     const [posts, setPosts] = useState([])
+
+    const userid = Cookies.get('user')
     useEffect(()=>{
-        axios.post('http://localhost:5000/posts/user/posts', {author: Cookies.get('username')})
+        //Get user posts
+        axios.post('http://localhost:8080/posts/user/posts', {author: Cookies.get('username')})
         .then(posts=> {
-            console.log(posts)
+            // console.log(posts)
             setPosts(posts)
         })
         .catch(err => console.log(err))
+
+        //get following
+        axios.get(`http://localhost:8080/users/${userid}/following`)
+        .then(res=> {
+            console.log(res)
+        })
+        .catch(err=> console.log(err))
     },[])
+
+    useEffect(()=>{
+        
+        
+    },[])
+
     return (
         <div className="user-info">
             <div className="user-heading"> 
@@ -26,16 +45,17 @@ function ProfileInformation() {
                 <ul>
                     <li><Link><FontAwesomeIcon icon = {faEdit} className = "icon"/>Posts {(posts.length)}</Link></li>
                     <li><Link><FontAwesomeIcon icon = {faThumbsUp} className = "icon"/>Likes </Link></li>
-                    <li><Link to = '/group'><FontAwesomeIcon icon = {faUsers} className = "icon"/>Groups</Link></li>
                 </ul>
-             <div className="groups-section">
-                <ul className="group-names">
-                    <li><Link>Group 1 with a long name for testing purpose to check what kind of space it takes</Link></li>
-                    <li><Link>Group 2</Link></li>
-                    <li><Link>Group 3</Link></li>
-                    <li><Link>Group 4</Link></li>
-                </ul>
-             </div>
+                <div className="followers-following-section">
+                    <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+                        <Tab eventKey="home" title="Followers">
+                            <p style = {{color:"white"}}>Lorem ipsum dolor sit amet.</p>
+                        </Tab>
+                        <Tab eventKey="profile" title="Following">
+                            <p style = {{color:"white"}}>Lorem ipsum dolor sit amet.</p>
+                        </Tab>
+                    </Tabs>
+                </div>
             </div>
         </div>
     )

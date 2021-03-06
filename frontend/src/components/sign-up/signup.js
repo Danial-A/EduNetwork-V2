@@ -28,10 +28,10 @@ function SignUp(props) {
     }
     const onSubmit =( values, onSubmitProps)=>{
         // setRedirect(true);
-        axios.post('http://localhost:5000/users/register',values)
+        axios.post('http://localhost:8080/users/register',values)
         .then((res)=>{
             window.alert('User registered')
-            console.log(res.data)})
+            console.log(values)})
         .catch(err =>{ console.log('Error: '+err)});
        // onSubmitProps.resetForm()
        console.log(values)
