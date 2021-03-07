@@ -8,7 +8,11 @@ const socketio = require('socket.io')
 
 const app = express();
 const server = http.createServer(app)
-const io = socketio(server)
+const io = socketio(server,{
+    cors:{
+        origin:"*"
+    }
+})
 const port = process.env.PORT || 8080;
 
 mongoose.connect(process.env.DB_URI, {useNewUrlParser:true, useCreateIndex:true, useUnifiedTopology:true})
@@ -31,14 +35,14 @@ app.use('/posts', postRoutes)
 app.use('/groups',groupRoutes)
 
 
-app.listen(port, ()=>{
+server.listen(port, ()=>{
     console.log(`Server running at port ${port}`)
 })
 
-// //Socket io logic
-// io.on('connection', (socket)=>{
-//     console.log("New connection");
-//     socket.emit('connection',null)
-// })
+//Socket io logic
+io.on('connection', (socket)=>{
+    console.log("New connection");
+    socket.emit('connection',null)
+})
 
 

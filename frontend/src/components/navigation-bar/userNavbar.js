@@ -7,6 +7,7 @@ import { faBook} from '@fortawesome/free-solid-svg-icons'
 import {Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
+
 function NavigationBar() {
   function handleLogout(){
     console.log(Cookies.get())
@@ -20,7 +21,7 @@ function NavigationBar() {
             <Nav className="ml-auto navbar-links">
               <Nav.Link href="/Home">Home</Nav.Link>
               <Nav.Link href="/profile">Profile</Nav.Link>
-              <Nav.Link href="#">Learn</Nav.Link>
+              <Nav.Link href="/yt/search">Learn</Nav.Link>
               <Nav.Link href="/sign-in" className = "navbar-signup" onClick = {handleLogout}>Log Out</Nav.Link>
             </Nav>
           </Navbar.Collapse>

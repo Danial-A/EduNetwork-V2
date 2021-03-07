@@ -26,16 +26,20 @@ function ProfileInformation() {
         //get following
         axios.get(`http://localhost:8080/users/${userid}/following`)
         .then(res=> {
-            console.log(res)
+            setFollowing(res.data)
+        })
+        .catch(err=> console.log(err))
+
+        //Get followers
+        axios.get(`http://localhost:8080/users/${userid}/followers`)
+        .then(res=> {
+            setFollowers(res.data)
         })
         .catch(err=> console.log(err))
     },[])
 
-    useEffect(()=>{
-        
-        
-    },[])
-
+   
+    console.log(followers)
     return (
         <div className="user-info">
             <div className="user-heading"> 
@@ -49,10 +53,19 @@ function ProfileInformation() {
                 <div className="followers-following-section">
                     <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
                         <Tab eventKey="home" title="Followers">
-                            <p style = {{color:"white"}}>Lorem ipsum dolor sit amet.</p>
+                        <ol style = {{color:"white"}} className = "follower-section">
+                        {followers.map(f=>(
+                            <li><Link>{f.firstname} {f.lastname}</Link></li>
+                        ))}
+                    </ol>
+                        
                         </Tab>
                         <Tab eventKey="profile" title="Following">
-                            <p style = {{color:"white"}}>Lorem ipsum dolor sit amet.</p>
+                            <ol style = {{color:"white"}} >
+                                {following.map(f=>(
+                                    <li><Link>{f.firstname} {f.lastname}</Link></li>
+                                ))}
+                            </ol>
                         </Tab>
                     </Tabs>
                 </div>

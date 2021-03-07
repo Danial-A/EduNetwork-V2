@@ -15,7 +15,7 @@ function PostComment({postid}) {
         body: Yup.string().required('This field is required..')
     })
 
-    
+   
     const onSubmit = (values, onSubmitProps) =>{
          axios.post(`http://localhost:8080/posts/${postid}/comment/add`,values)
          .then(res => {

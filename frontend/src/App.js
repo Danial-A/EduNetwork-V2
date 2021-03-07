@@ -8,9 +8,10 @@ import UserHomePage from './pages/UserHomePage';
 import GroupPage from './pages/GroupPage'
 import YoutubeSearchPage from './pages/YoutubeSearchPage'
 import PostPage from './pages/postPage'
-
+import io from 'socket.io-client'
 
 function App() {
+
   return (
     <Switch>
       <Route exact path = "/" component = {HomePage}/>

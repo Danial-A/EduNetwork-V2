@@ -14,8 +14,20 @@
     background-color: white;
     color: black;
     border-radius: 10px;
+    padding-bottom: 20px;
 }
-.comment p, pre{
+.comment-side p, pre{
     padding:0;
     display: inline;
+}
+.comment{
+    display: flex;
+    justify-content: space-between;
+    margin:0 15px;
+    border-bottom: 1px solid black;
+    padding-top: 10px;
+}
+
+.comment :hover{
+    
 }

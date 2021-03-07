@@ -116,16 +116,28 @@ function Post({posts, loading}) {
             }
             <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              <Modal.Title>Edit Post</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Body>
+            <form>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Title</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title"/>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Body</label>
+              <textarea class="form-control" id="postbody" placeholder="Body"/>
+            </div>
+                <Button type = "submit" variant="danger" >
+                  Save Changes
+                </Button>
+            </form>
+            </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button variant="warning" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleClose}>
-                Save Changes
-              </Button>
+             
             </Modal.Footer>
           </Modal>
         </div>
