@@ -38,11 +38,17 @@ const userSchema = new Schema({
         type: Date,
         required:true
     },
-    chatId:{
-        required:true,
-        type:String
-        // unique:true
-    }
+    chats:[
+        {
+            chatid:{
+                type:String,
+                trim:true,
+                required:true,
+                unique:true,
+                sparse:true
+            }
+        }
+    ]
     ,followers:[
         {
             userid:{

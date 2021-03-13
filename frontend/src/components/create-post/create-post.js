@@ -1,18 +1,16 @@
-import React, {useState,useEffect,useRef} from 'react'
+import React, {useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './create-post.css'
 import { useFormik} from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
-import Cookies from 'js-cookie'
 function UserPost(TotalPosts) {
 
     const {totalPosts, setPosts} = useState(TotalPosts);
-    // console.log(Cookies.get('username'))
     const initialValues = {
         title: '',
         body: '',
-        author: Cookies.get('username'),
+        author: localStorage.getItem('username'),
         postType: 'profile'
     }
     const onSubmit = values =>{

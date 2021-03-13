@@ -1,7 +1,9 @@
 const User = require('../models/usermodel');
+const Groups = require('../models/groupModel')
 const {userLoginValidation,userRegisterValidation} = require('../validation/validationSchema')
 const bcrypt = require('bcryptjs')
-const jwt  = require('jsonwebtoken')
+const jwt  = require('jsonwebtoken');
+const e = require('express');
 
 module.exports.get_all = (req,res)=>{
     User.find({}, (err,users)=>{
@@ -48,7 +50,7 @@ module.exports.add_new_user = async (req,res)=>{
        dob
    }); 
    newUser.save()
-   .then(()=> res.json("User Added to database"))
+   .then(()=> res.json("User sign up successful").redirect('/home'))
    .catch((err)=>{res.status(400).json({error: err, message:"Server failed to respond" })})
 }
 
@@ -69,9 +71,10 @@ module.exports.user_login = async (req,res)=>{
         //Check valid password
         const validPassword = await bcrypt.compare(req.body.password, user.password);
         if(!validPassword) return res.status(400).send('Invalid Password...');
-    
+        //Token creation 
         const token = jwt.sign({_id:user._id}, process.env.TOKEN_SECRET)
         res.header('auth-token', token).send({ token , userid:  user._id , username : user.username })
+ 
 
    }catch(err) {
        console.log(err)
@@ -92,12 +95,18 @@ module.exports.following_follower = (req,res)=>{
 
                 else {
                     user.following.push(newFollowing)
-                    user.save().then(()=>{
+                    user.save()
+                    .then(()=>{
                         const newFollower = {userid : req.params.id}
                         targetUser.followers.push(newFollower);
-                        targetUser.save().catch(err=> res.json({error: err, message:"Error adding user to followers"}))
-                        res.json("User added to followers and following")
-                    }).catch(err=> res.json("Error adding user to following..",err))
+                        targetUser.save()
+                        .then(()=>res.json("User added to followers and following"))
+                        .catch(err=> res.json({error: err, message:"Error adding user to followers"}))
+                        
+                    }).catch(err=> res.status(400).json({
+                        err,
+                        message:"Error adding user to following"
+                    }))
                     
                     
                 }
@@ -209,6 +218,107 @@ module.exports.get_following = (req,res)=>{
         }
     })
     
+}
+
+//Join group 
+module.exports.join_group = (req,res)=>{
+    const groupid = req.body.groupid
+    User.findById(req.params.id)
+    .then(user=>{
+        const Group_Found = user.groups.filter(g=> g.groupid === req.body.groupid)
+        if(Group_Found.length === 0){
+            Groups.findOne({"_id": req.body.groupid}, (err,group)=>{
+                if(err) res.status(400).json({
+                    error:err,
+                    message:"Error finding the group"
+                })
+                if (Group_Found === null) res.json("No group found by id ", req.body.groupid)
+
+                else{
+                    user.groups.push({groupid:group._id})
+                    user.save().then(()=>{
+                        res.json({
+                            message:"User joined the group successfully",
+                            group:groupid
+                        })
+                    }).catch(err=>{
+                        res.status(400).json({
+                            message:"Unable to join the group",
+                            error:err
+                        })
+                    })
+                }
+            })
+        }
+    }).catch(err=>{
+        res.status(404).json({
+            error:err,
+            message:"Unable to locate the user"
+        })
+    })
+}
+
+//Get all user groups
+module.exports.get_user_groups = (req,res)=>{
+    User.findById(req.params.id)
+    .then(user=>{
+        const groupids = user.groups.map(g=> g.groupid)
+        Groups.find({
+            '_id':{
+                $in:groupids
+            }
+        }).then(group=> res.json(group))
+        .catch(err=> res.status(400).json({
+            message:"Error retrieving the groups",
+            err
+        }))
+    })
+    .catch(err=> res.status(400).json({
+        message:"Error retrieving the user",
+        err
+    }))
+}
+
+//user search by username
+module.exports.user_search_username = (req,res)=>{
+    User.aggregate([
+        {
+            $search:{
+                "autocomplete":{
+                    "query":`${req.body.query}`,
+                    "path":"username"
+                }
+            }
+        }
+    ]).then(user=> res.json(user)).catch(err=>res.json(err))
+}
+
+//user search by firstname
+module.exports.user_search_firstname = (req,res)=>{
+    User.aggregate([
+        {
+            $search:{
+                "autocomplete":{
+                    "query":req.body.query,
+                    "path":"firstname"
+                }
+            }
+        }
+    ]).then(user=> res.json(user)).catch(err=>res.json(err))
+}
+
+//user search by emailid
+module.exports.user_search_emailid = (req,res)=>{
+    User.aggregate([
+        {
+            $search:{
+                "autocomplete":{
+                    "query":`${req.body.query}`,
+                    "path":"emailid"
+                }
+            }
+        }
+    ]).then(user=> res.json(user)).catch(err=>res.json(err))
 }
 
 

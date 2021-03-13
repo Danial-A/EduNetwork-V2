@@ -1,7 +1,19 @@
 import React from 'react'
+import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import './userSearch.css'
 
-function userSearch() {
+function UserSearch() { 
+    const [users,setUsers] = React.useState([])
+    const [search,setSearch] = React.useState('')
+    const getUsers =async (query)=>{
+        try{
+            const response = await axios.post(`http://localhost:8080/users/search/name`, {query})
+            setUsers(response.data)
+        }catch(err){
+            console.log(err)
+        }
+    }
     return (
         <div>
             <div className="contatiner">
@@ -15,15 +27,32 @@ function userSearch() {
                 placeholder="Search..." 
                 aria-label="Username" 
                 aria-describedby="basic-addon1"
+                value = {search}
+                onChange = {e=>{
+                    setSearch(e.target.value)
+                    getUsers(search)
+                }}
+                autoComplete = "off"
                 />
             <div className="input-group-prepend">
-            <button type = "submit" className = "button-search">Search</button>
+            <button type = "submit" className = "button-search" onClick = {(e)=>{
+                e.preventDefault()
+            }}>Search</button>
             </div>
             </div>
         </form>
+        <div className="user-container">
+            {users.length > 0 ? 
+                (
+                    users.map((u,index)=>(
+                        <div className = "user-name">{`${index+1})`} {u.username}</div>
+                    ))
+                )
+             : <div>No users found</div>}
+        </div>
             </div>
         </div>
     )
 }
 
-export default userSearch
+export default UserSearch

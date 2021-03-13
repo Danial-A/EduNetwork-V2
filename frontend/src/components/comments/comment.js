@@ -2,15 +2,13 @@ import React from 'react'
 import {Formik, useFormik} from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './comment.css'
 function PostComment({postid}) {
     const initialValues = {
-        username: Cookies.get('username'),
+        username: localStorage.getItem('username'),
         body: ''
     }
-
     const validationSchema = Yup.object({
         body: Yup.string().required('This field is required..')
     })

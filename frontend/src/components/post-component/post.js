@@ -1,12 +1,11 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import Axios from 'axios'
 import Tippy from '@tippy.js/react'
 import { faThumbsUp, faComment, faShare, faSave, faTrash,faEdit,faArchive } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import PostComment from '../comments/comment'
-import Cookies from 'js-cookie'
+//import PostComment from '../comments/comment'
 import axios from 'axios'
 import {Modal, Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -15,7 +14,7 @@ import 'tippy.js/dist/tippy.css'
 
 
 function Post({posts, loading}) {
-    const username = Cookies.get('username')
+    const username = localStorage.getItem('username')
     const [liked, setLiked] = useState(false)
 
     //Handle close/open Modal
@@ -44,6 +43,8 @@ function Post({posts, loading}) {
 
 
     const DeletePost = (postid)=>{
+      const choice = window.confirm("Are you sure you want to delete this post?")
+      if(choice){
         Axios.delete(`http://localhost:8080/posts/delete/${postid}`)
         .then(res=>{
             window.alert("Post Deleted");
@@ -51,6 +52,10 @@ function Post({posts, loading}) {
             console.log(res.data)
         })
         .catch(err=>{console.log(err)})
+      }else{
+        return null
+      }
+        
         }
 
     if(loading){
@@ -61,60 +66,60 @@ function Post({posts, loading}) {
     return (
         <div className="container-fluid posts-section">
             {
-                posts.map(post=>(
-                    
-                    <div key = {post._id} className="post-container container" >
-                      <div className="row user-info-row">
-                        <div className="col-md-6">
-                           <span className = "user-heading">User:</span> {post.author}
+              posts.length > 0 ?
+                (posts.map(post=>(
+                  <div key = {post._id} className="post-container container" >
+                  <div className="row user-info-row">
+                    <div className="col-md-6">
+                       <span className = "user-heading">User:</span> {post.author}
+                    </div>
+                    <div className="col-md-6 created-at">
+                        <pre><strong>Created:</strong> {moment(post.createdAt).fromNow()}</pre>
+                    </div>
+                  </div>
+                  <div className="row" style = {{justifyContent:"space-between"}}>
+                    <div className="col-md-8">
+                        <div className="post-heading-section">
+                            <h4>{post.title}</h4>
                         </div>
-                        <div className="col-md-6 created-at">
-                            <pre><strong>Created:</strong> {moment(post.createdAt).fromNow()}</pre>
-                        </div>
-                      </div>
-                      <div className="row" style = {{justifyContent:"space-between"}}>
-                        <div className="col-md-8">
-                            <div className="post-heading-section">
-                                <h4>{post.title}</h4>
-                            </div>
-                        </div> 
-                        <div className="co-md-4">
-                            
-                              {post.author === username ? 
-                                <div className="delete-icons-row">
-                                  <Link ><FontAwesomeIcon  icon = {faTrash} onClick = {()=>DeletePost(post._id)}/></Link>
-                                  <Link><FontAwesomeIcon icon = {faEdit} onClick = {handleShow} /></Link>
-                                  <Link><FontAwesomeIcon icon = {faArchive}/></Link>
-                                </div> 
-                              :
-                              <div></div>
-                            
-                            }
-                            
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">
-                            <div className="post-body">
-                                <p>{post.body}</p>
-                            </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-6 like-icons-row">
-                            <Tippy content = {`${post.likes.length} ${post.likes.length > 1 ? ('Likes'):('Like')}`}><Link><FontAwesomeIcon icon = {faThumbsUp} onClick = {()=> checkLike(post._id)} className = {`${liked ? ('liked'): ('disliked')}`}/></Link></Tippy>
-                            <Tippy content = {`${post.comments.length} ${post.comments.length > 1 ? ('Comments'):('Comment')}`}><Link to = {`/user/post/${post._id}`}><FontAwesomeIcon icon = {faComment}/></Link></Tippy>
-                            <Link><FontAwesomeIcon icon = {faShare}/></Link>
-                            <Link><FontAwesomeIcon icon = {faSave}/></Link>
-                        </div>
+                    </div> 
+                    <div className="co-md-4">
                         
-                      </div>
-                      
+                          {post.author === username ? 
+                            <div className="delete-icons-row">
+                              <Link ><FontAwesomeIcon  icon = {faTrash} onClick = {()=>DeletePost(post._id)}/></Link>
+                              <Link><FontAwesomeIcon icon = {faEdit} onClick = {handleShow} /></Link>
+                              <Link><FontAwesomeIcon icon = {faArchive}/></Link>
+                            </div> 
+                          :
+                          <div></div>
+                        
+                        }
+                        
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                        <div className="post-body">
+                            <p>{post.body}</p>
+                        </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6 like-icons-row">
+                        <Tippy content = {`${post.likes.length} ${post.likes.length > 1 ? ('Likes'):('Like')}`}><Link><FontAwesomeIcon icon = {faThumbsUp} onClick = {()=> checkLike(post._id)} className = {`${liked ? ('liked'): ('disliked')}`}/></Link></Tippy>
+                        <Tippy content = {`${post.comments.length} ${post.comments.length > 1 ? ('Comments'):('Comment')}`}><Link to = {`/user/post/${post._id}`}><FontAwesomeIcon icon = {faComment}/></Link></Tippy>
+                        <Link><FontAwesomeIcon icon = {faShare}/></Link>
+                        <Link><FontAwesomeIcon icon = {faSave}/></Link>
                     </div>
                     
-                ))
+                  </div>
+                  
+                </div>
+                ))  
+                ) : <div className = "container post-container" style = {{color:"crimson"}}>NO POSTS TO SHOW</div>
             }
-            <Modal show={show} onHide={handleClose}>
+            {<Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Edit Post</Modal.Title>
             </Modal.Header>
@@ -122,7 +127,7 @@ function Post({posts, loading}) {
             <form>
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title"/>
+              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title"/>
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Body</label>
@@ -137,9 +142,8 @@ function Post({posts, loading}) {
               <Button variant="warning" onClick={handleClose}>
                 Close
               </Button>
-             
             </Modal.Footer>
-          </Modal>
+          </Modal>}
         </div>
     )
 }

@@ -3,7 +3,6 @@ import '../../pages/UserProfile.css'
 import {FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faThumbsUp, faUsers, faTasks} from '@fortawesome/free-solid-svg-icons'
 import {Link } from 'react-router-dom'
-import Cookies from 'js-cookie'
 import axios from 'axios'
 import {Tabs, Tab} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -13,10 +12,10 @@ function ProfileInformation() {
     const [following, setFollowing] = useState([])
     const [posts, setPosts] = useState([])
 
-    const userid = Cookies.get('user')
+    const userid = localStorage.getItem('userid')
     useEffect(()=>{
         //Get user posts
-        axios.post('http://localhost:8080/posts/user/posts', {author: Cookies.get('username')})
+        axios.post('http://localhost:8080/posts/user/posts', {author: localStorage.getItem('username')})
         .then(posts=> {
             // console.log(posts)
             setPosts(posts)
@@ -39,7 +38,7 @@ function ProfileInformation() {
     },[])
 
    
-    console.log(followers)
+
     return (
         <div className="user-info">
             <div className="user-heading"> 

@@ -15,6 +15,7 @@ function YoutubeSearchPage(props) {
                 q:keyword
             }
         })
+        console.log(response)
         
     }
     console.log(props.match)

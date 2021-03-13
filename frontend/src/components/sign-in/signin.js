@@ -8,12 +8,12 @@ import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
-import Cookies from 'js-cookie'
+
 
 function SignIn() {
-
+    
+   
     const [loggedIn,setLoggedIn] = useState(false)
-    const[user,setUser] = useState({})
     const initialValues = {
         username : '',
         password: ''
@@ -29,18 +29,18 @@ function SignIn() {
   const onSubmit = (values, onSubmitProps)=>{
     axios.post('http://localhost:8080/users/login', values)
     .then(res =>{
-        console.log(res.data)
+        console.log(res.data.userid)
         if(res.status === 200) {
-            axios.post(`http://localhost:8080/users/${res.data.userid}`)
+            axios.get(`http://localhost:8080/users/${res.data.userid}`)
             .then(user=> console.log(user))
             .catch(err=> console.log(err))
+            const storage = localStorage;
+            storage.setItem('userid', res.data.userid)
+            storage.setItem("token", res.data.token)
+            storage.setItem("username",res.data.username)
             setLoggedIn(true)
-            Cookies.set('token', res.data.token)
-            Cookies.set('user', res.data.userid)
-            Cookies.set('username', res.data.username)
         }
-        redirectUser()
-        
+      redirectUser()
     })
     .catch(err=> console.log(err))
     onSubmitProps.resetForm()
@@ -110,7 +110,7 @@ function SignIn() {
                 
                           </Row>
                           <Row className = "login-btn">
-                            <Button variant = "primary" type = "submit" onClick = {redirectUser()}>Log In</Button>
+                            <Button variant = "primary" type = "submit" onClick= {redirectUser}>Log In</Button>
                           </Row>
                         </Form>
                     </div>

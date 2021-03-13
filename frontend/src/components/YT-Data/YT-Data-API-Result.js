@@ -17,11 +17,11 @@ function YTPage(props) {
     return (
         <div style = {{color:"white"}}>
             <ul>
-                {/*
-                    users.map(user=>(
+                
+                    {users.map(user=>(
                         <li key = {user._id}><Link to = {`${props.location.path}/${user.user_id}`}>{user.username}</Link></li>
-                    ))
-                    */}
+                    ))}
+                    
             </ul>
           </div>
       );

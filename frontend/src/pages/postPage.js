@@ -17,10 +17,12 @@ import 'tippy.js/dist/tippy.css'
 function PostPage(props) {
   // console.log(props.match.params.id)
   const [post,setPost] = useState({})
+  const [comments,setComments] = useState([])
   useEffect(()=>{
       axios.get(`http://localhost:8080/posts/post/${props.match.params.id}`)
       .then(res=> {
         setPost(res.data)
+        setComments(res.data.comments)
       })
       .catch(err=> console.log(err))
   },[])
@@ -76,7 +78,7 @@ function PostPage(props) {
                     </div>
         </div>
         <div className="display-postcomments">
-          <DisplayComments postid = {post._id}/>
+          <DisplayComments comments = {comments}/>
         </div>
         <div className="post-comments" style = {{color:"white"}}>
           <PostComment postid = {post._id} />   

@@ -8,11 +8,16 @@ import './signup.css'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
-
-
-
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function SignUp(props) {
+    //Toast setting
+    toast.configure()
+    const signedUp = ()=>{
+        toast.success('User sign up successful!',{
+        });
+    }
 
     const [redirect, setRedirect] = useState(false)
 
@@ -30,11 +35,12 @@ function SignUp(props) {
         // setRedirect(true);
         axios.post('http://localhost:8080/users/register',values)
         .then((res)=>{
-            window.alert('User registered')
-            console.log(values)})
+            signedUp()
+            console.log(values)
+        })
         .catch(err =>{ console.log('Error: '+err)});
-       // onSubmitProps.resetForm()
-       console.log(values)
+       onSubmitProps.resetForm()
+      
     }
     let history = useHistory();
     function redirectUser(){
@@ -158,7 +164,7 @@ function SignUp(props) {
                             </div>
                         </div>
                         <div className="col-sm-4 signup">
-                        <img src="/images/signup.svg" alt="sign in image"/>
+                        <img src="/images/signup.svg" alt="sign in"/>
                         </div>
                     </div>
                 </div>

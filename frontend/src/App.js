@@ -5,13 +5,16 @@ import SignIn from './components/sign-in/signin'
 import SignUp from './components/sign-up/signup';
 import UserProfile from './pages/UserProfile';
 import UserHomePage from './pages/UserHomePage';
-import GroupPage from './pages/GroupPage'
+import GroupPage from './components/groupComponent/GroupPage'
 import YoutubeSearchPage from './pages/YoutubeSearchPage'
 import PostPage from './pages/postPage'
-import io from 'socket.io-client'
+import Messenger from './pages/messenger'
+import EditorPage from './pages/editorPage';
+
+
 
 function App() {
-
+  console.log(localStorage)
   return (
     <Switch>
       <Route exact path = "/" component = {HomePage}/>
@@ -22,6 +25,9 @@ function App() {
       <Route exact path = "/group/:id" component = {GroupPage}/>
       <Route exact path = "/yt/search" component = {YoutubeSearchPage}/>
       <Route exact path = "/user/post/:id" component = {PostPage}/>
+      <Route exact path = "/messenger" component = {Messenger}/>
+      <Route exact path = "/messenger/:id" component = {Messenger}/>
+      <Route exact path = "/playground" component = {EditorPage}/>
     </Switch>
   );
 }

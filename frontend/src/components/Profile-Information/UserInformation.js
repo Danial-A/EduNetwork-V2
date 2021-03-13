@@ -2,7 +2,6 @@ import { faUser, faEnvelope, faCalendar, faUsers } from '@fortawesome/free-solid
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Modal, Button} from 'react-bootstrap'
 import React, {useState, useEffect} from 'react'
-import Cookies from 'js-cookie'
 import axios from 'axios'
 import { useFormik} from 'formik'
 import * as Yup from 'yup'
@@ -14,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 function UserInformation() {
-    const user = Cookies.get('user')
+    const user = localStorage.getItem('userid')
     const [User,setUser] = useState({})
 
     //Show hide modal

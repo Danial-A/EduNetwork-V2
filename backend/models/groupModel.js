@@ -7,6 +7,11 @@ const groupModel = new schema({
         required:true,
         min:6
     },
+    description:{
+        type:String,
+        required:true,
+        min:20
+    },
     admins:[
         {
             userid:{
@@ -35,11 +40,10 @@ const groupModel = new schema({
                 required:true,
                 unique:true,
                 sparse:true,
-
             }
         }
     ]
 })
 
-const Groups = mongoose.model('Groups',groupModel)
-module.exports = Groups
+const Group = mongoose.model('Groups',groupModel)
+module.exports = Group

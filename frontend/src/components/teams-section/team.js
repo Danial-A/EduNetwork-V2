@@ -49,7 +49,7 @@ function TeamSection() {
                     <div className="social-links">
                         <Container >
                             <Row className = "center-text">
-                                <Col><a><FontAwesomeIcon icon ={faFacebook} size = "2x"/></a></Col>
+                                <Col><FontAwesomeIcon icon ={faFacebook} size = "2x"/></Col>
                                 <Col><FontAwesomeIcon icon ={faGithub} size = "2x"/></Col>
                                 <Col><FontAwesomeIcon icon ={faTwitter} size = "2x"/></Col>
                                 <Col><FontAwesomeIcon icon ={faInstagram} size = "2x"/></Col>

@@ -1,0 +1,10 @@
+.user-name{
+    border-bottom: 2px solid crimson;
+    padding-bottom: 3px;
+    margin-bottom: 5px;
+}
+.user-container{
+    margin: 20px 0;
+    display:inline-block
+
+}

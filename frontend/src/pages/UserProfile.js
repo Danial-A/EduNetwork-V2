@@ -1,16 +1,16 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import NavigationBar from '../components/navigation-bar/userNavbar'
-import './UserProfile.css'
 import {Container, Row, Col} from 'react-bootstrap'
 import Footer from '../components/footer-section/footer'
 import Post from '../components/post-component/post'
 import Pagination from '../components/post-component/pagination'
 import ProfileInformation from '../components/Profile-Information/ProfileInformation'
 import UserInformation from '../components/Profile-Information/UserInformation'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import GroupsDisplay from '../components/groupComponent/groupsDisplayHome'
 import UserPost from '../components/create-post/create-post'
-import Cookies from 'js-cookie'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './UserProfile.css'
 
 
 function UserProfile() {
@@ -18,7 +18,7 @@ function UserProfile() {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(2);
+    const [postsPerPage] = useState(3);
 
 
 
@@ -26,7 +26,7 @@ function UserProfile() {
   
         const fetchPosts = async ()=>{
             setLoading(true);
-            const response = await axios.post('http://localhost:8080/posts/user/posts', {"author": Cookies.get('username')});
+            const response = await axios.post('http://localhost:8080/posts/user/posts', {"author": localStorage.getItem('username')});
             setPosts(response.data);
             setLoading(false)
         }
@@ -68,13 +68,17 @@ function UserProfile() {
                         </div>
                         <Post posts = {currentPosts} loading= {loading} />
                         <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate= {paginate}/>
+                        <GroupsDisplay/>
                     </Col>
                     <Col lg = {3} className = "demo">
                         <ProfileInformation/>
                     </Col>
                 </Row>
             </Container>
-            <Footer/>
+            <div className="footer" style = {{position:"relative"}}>
+                <Footer  />
+            </div>
+            
             
         </div>
     )
