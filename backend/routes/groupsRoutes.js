@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const GroupController = require('../controllers/groupPostController')
 //create new
-router.post('/create', GroupController.create_group)
+router.post('/create/:user', GroupController.create_group)
 //get All groups
 router.get('/', GroupController.get_all_groups)
 //get group by id

@@ -43,6 +43,9 @@ const groupModel = new schema({
             }
         }
     ]
+},{
+    timestamps :true,
+    autoIndex:false
 })
 
 const Group = mongoose.model('Groups',groupModel)

@@ -27,6 +27,21 @@ module.exports.create_new_message= (req,res)=>{
     }))
 }
 
+//get message by id
+module.exports.get_message_by_id = (req,res)=>{
+    message.findById(req.params.id, (err,msg)=>{
+        if(err) return res.json({
+            err,
+            message:"Error finding the message"
+        })
+
+        else{
+            return res.json(msg)
+        }
+    })
+    
+}
+
 //delete message by id
 module.exports.delete_message = (req,res)=>{
     message.findByIdAndDelete(req.params.id)
@@ -39,4 +54,14 @@ module.exports.delete_message = (req,res)=>{
             message:"Error deleting the message"
         })
     })
+}
+
+//message nuke
+module.exports.delete_all_messages= (req,res)=>{
+    message.deleteMany({})
+    .then(res.json("Nuke deployed"))
+    .catch(err=> res.status(400).json({
+        err,
+        message:"Error deleting messages"
+    }))
 }

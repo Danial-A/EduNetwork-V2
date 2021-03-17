@@ -1,4 +1,5 @@
 const Post = require('../models/postModel');
+const Users = require('../models/usermodel')
 const {postValidationSchema} = require('../validation/validationSchema')
 //Retrieve all posts 
 module.exports.get_all = (req,res)=>{
@@ -126,8 +127,8 @@ module.exports.user_posts = (req,res)=>{
 
 //Delete all posts by a user
 module.exports.delete_all_user_posts = (req,res)=>{
-    Post.deleteMany({"author":  req.body.username})
-    .then(res.json(`All posts by ${req.body.username} have been deleted`))
+    Post.deleteMany({"author":  req.body.userid})
+    .then(res.json(`All posts by ${req.body.userid} have been deleted`))
     .catch(err=> res.status(400).json({error: err, message:"Error deleting the user posts"}))
 }
 
@@ -149,5 +150,30 @@ module.exports.update_post = (req,res)=>{
             post,
             message:"Post updated successfully"
         })
+    })
+}
+
+//get all posts of the users that the current user is following
+module.exports.get_following_users_posts = (req,res)=>{
+    const userid = req.params.user
+    Users.findById(userid, "following",(err,users)=>{
+        if(err) return Response.json({
+            err,
+            message:"Error retrieving user"
+        })
+        else if (users=== null) res.json("User does not exists")
+        else{
+            const result = users.following
+            let following_posts = result.map(u=> u.userid)
+            following_posts = [...following_posts, userid]
+            Post.find({
+                'author':{
+                    $in:following_posts
+                }
+            }).sort({createdAt:-1}).then(response=> res.json(response))
+            .catch(err=> res.status(400).json({
+                err,message:"Error getting posts for user"
+            }))
+        }
     })
 }

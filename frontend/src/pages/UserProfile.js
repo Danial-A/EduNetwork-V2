@@ -26,7 +26,7 @@ function UserProfile() {
   
         const fetchPosts = async ()=>{
             setLoading(true);
-            const response = await axios.post('http://localhost:8080/posts/user/posts', {"author": localStorage.getItem('username')});
+            const response = await axios.post('http://localhost:8080/posts/user/posts', {"author": localStorage.getItem('userid')});
             setPosts(response.data);
             setLoading(false)
         }

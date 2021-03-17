@@ -30,6 +30,8 @@ router.get("/:id/comments", postController.get_all_comments)
 router.get('/post/:id', postController.get_post_by_id)
 //Find user posts
 router.post('/user/posts', postController.user_posts)
+//get following users posts
+router.get('/:user/get/posts',postController.get_following_users_posts)
 
 
 module.exports = router

@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
 const Group = require('../models/groupModel')
 const Post = require('../models/postModel')
+const Users = require('../models/usermodel')
 const {postValidationSchema} = require('../validation/validationSchema')
 const {groupValidationSchema}  = require('../validation/validationSchema')
 //Create new group
 module.exports.create_group =async (req,res)=>{
-
+    const userid = req.params.user
     const {error} = await groupValidationSchema(req.body)
     if(error){
         res.status(400).send(error.details[0].message)
@@ -17,7 +18,31 @@ module.exports.create_group =async (req,res)=>{
         title,description
     })
     newGroup.save()
-    .then(()=> res.json("New Group created"))
+    .then((group)=> {
+        group.admins.push({userid})
+        group.save()
+        .then(response=>{
+            Users.findById(userid, "groups", (err,user)=>{
+                if(err) return res.status(400).json({
+                    err,
+                    message:"Error finding user"
+                })
+                else if(user === null) return res.json("No user exists")
+                else{
+                    user.groups.push({groupid:response._id})
+                    user.save()
+                    .then(res.json("New group created, user added as admin, group added to user groups list"))
+                    .catch(err=> res.status(400).json({
+                        err,
+                        message:"Error adding group to user list"
+                    }))
+                }
+            })
+        }).catch(err=> res.status(400).json({
+            err,
+            message:"error creating the group"
+        }))
+    })
     .catch(err=> res.status(400).json({error: err, message:"Error creating the group"}))
 }
 

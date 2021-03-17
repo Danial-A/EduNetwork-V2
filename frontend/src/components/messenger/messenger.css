@@ -1,4 +1,5 @@
 /* Side panel css */
+
 .title{
     border-radius: 10px;
     background-color: white;
@@ -14,6 +15,9 @@ h3{
 
 .chat-list{
     background-color: white;
+}
+.chat-list ul{
+    padding: 10px;
 }
 
 /* Main Chat Area CSS */
@@ -46,4 +50,35 @@ h3{
     margin-bottom:15px;
     padding:5px;
     border-radius: 5px;
+}
+
+/* Create new chat */
+.create-new-chat{
+    background-color: white;
+    padding: 10px 15px;
+    border-radius:10px
+}
+.create-new-chat input{
+    margin-bottom: 10px;
+    
+}
+
+/* Users search */
+.user-search-result{
+    display: flex;
+    justify-content: space-between;
+}
+
+.chat-info li{
+    list-style-type: none;
+}
+a.chat-info{
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    transition:all 0.2s ease-in;
+}
+
+a.chat-info:hover{
+    color: crimson;
 }

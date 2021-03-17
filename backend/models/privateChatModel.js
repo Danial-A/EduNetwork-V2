@@ -2,19 +2,15 @@ const mongoose = require('mongoose')
 const schema = mongoose.Schema
 
 const PrivateChatSchema = new schema({
-    participants:{
-        firstUserID:{
-            type:String,
-            unique:true,
-            required:true,
-            trim:true
-        },
-        secondUserID:{
-            type:String,
-            unique:true,
-            required:true,
-            trim:true
-        }
+    recepientUser:{
+        type:String,
+        unique:true,
+        required:"Recipient must be defined"
+    },
+    requester:{
+        type:String,
+        unique:true,
+        required:"Requester must be defined"
     },
     messages:[{
         messageid:{
@@ -23,7 +19,8 @@ const PrivateChatSchema = new schema({
         }
     }]
 },{
-    timestamps:true
+    timestamps:true,
+    autoIndex:false
 })
 
 const PrivateChat = mongoose.model('PrivateChats', PrivateChatSchema)

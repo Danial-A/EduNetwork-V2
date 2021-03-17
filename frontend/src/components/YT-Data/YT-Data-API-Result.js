@@ -1,29 +1,61 @@
-import React from 'react'
+import React,{useState} from 'react'
+import {Modal, Button} from 'react-bootstrap'
+import YouTube from 'react-youtube'
 import './yt.css'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
 function YTPage(props) {
-    const [users,setUsers] = React.useState([])
+    const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+    
     React.useEffect(()=>{
-        axios.get('http://localhost:8080/users/')
-        .then(res=> {
-            setUsers(res.data)
-            
-        })
-        .catch(err=> console.log(err))
+        
     },[])
-    console.log(props.location.path)
+    
+    const youtubePlayer = ()=>{
+        const videoOnReady = (event)=>{
+            event.target.pauseVideo();
+        }
+        const videoId = "2TilZlxSZHM"
+        const opts = {
+            height: '390',
+            width: '640',
+            playerVars: {
+              // https://developers.google.com/youtube/player_parameters
+              autoplay: 1,
+            }
+        }
+        return <YouTube videoId = {videoId} opts = {opts} onReady = {e => videoOnReady(e)}/>
+    }
+
     return (
+        <>
         <div style = {{color:"white"}}>
             <ul>
-                
-                    {users.map(user=>(
-                        <li key = {user._id}><Link to = {`${props.location.path}/${user.user_id}`}>{user.username}</Link></li>
-                    ))}
-                    
+            
             </ul>
+            <Button variant="primary" onClick={handleShow}>
+                Launch demo modal
+            </Button>
           </div>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body><youtubePlayer/></Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                    Close
+                    </Button>
+                    <Button variant="primary" onClick={handleClose}>
+                    Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+          </>
       );
 }
 

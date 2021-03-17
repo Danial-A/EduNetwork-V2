@@ -2,34 +2,111 @@ import React,{useState} from 'react'
 import {Modal, Button} from 'react-bootstrap'
 import UserSearch from '../user-search-component/userSearch'
 import {Link} from 'react-router-dom'
+import axios from 'axios'
+import  * as Yup from 'yup'
+import { useFormik} from 'formik'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './searchPanel.css'
 function SearchPanel() {
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const uid = localStorage.getItem('userid')
+    //search modal
+    const [searchShow, setSearchShow] = useState(false);
+    const handleSearchClose = () => setSearchShow(false);
+    const handleSearchShow = () => setSearchShow(true);
 
-    
+    //group modal
+    const [groupShow, setGroupShow] = useState(false);
+    const handleGroupClose = () => setGroupShow(false);
+    const handleGroupShow = () => setGroupShow(true);
+
+    //Group form validation 
+    const initialValues = {
+        title:'',
+        description:''
+    }
+    const onSubmit = (values,onSubmitProps)=>{
+        try{
+            const response = axios.post(`http://localhost:8080/groups/create/${uid}`,values)
+            response.then(res=> console.log(res))
+            .catch(err=> console.log())
+        }catch(err){
+            console.log(err)
+        }
+        // axios.post(`http://localhost:8080/groups/create/${uid}`,values)
+        // .then(response=> console.log(response))
+        // .catch(err=> console.log(err))
+        // onSubmitProps.resetForm()
+    }
+    const validationSchema = Yup.object({
+        title:Yup.string().required("Title is required."),
+        description:Yup.string().required("Description is required.")
+    })
+    const formik = useFormik({
+        initialValues,onSubmit,validationSchema
+    })
+
     return (
-        <div className = "container-fluid search-container" style = {{color:"white"}}>
+        <>
+        <div className = "container-fluid " style = {{color:"white"}}>
+        <div className="search-container">
         <h4>Search Panel</h4>
-            <div className="row">
-                <div className="col search-links">
-                    <ul>
-                        <Link onClick  = {handleShow}><li>User Search</li></Link>
-                        <Link ><li>Post Search</li></Link>
-                        <Link ><li>Group Search</li></Link>             
-                    </ul>
-                </div>
+        <div className="row">
+            <div className="col search-links">
+                <ul>
+                    <Link onClick  = {handleSearchShow}><li>User Search</li></Link>  
+                </ul>
             </div>
-            <Modal show={show} onHide={handleClose} backdrop = "static" keyboard = {false} >
-               <Modal.Body>
-                    <UserSearch/>
-                    <Button onClick = {handleClose}>Close</Button>
-               </Modal.Body>
+        </div>
+        <Modal show={searchShow} onHide={handleSearchClose} backdrop = "static" keyboard = {false} >
+           <Modal.Body>
+                <UserSearch/>
+                <Button onClick = {handleSearchClose}>Close</Button>
+           </Modal.Body>
+        </Modal>
+        </div>
+            <button className = "btn btn-danger group-button" onClick = {handleGroupShow}>Create New Group?</button>
+            <Modal show={groupShow} onHide={handleGroupClose} animation={true} keyboard = {false} backdrop = "static">
+                <Modal.Header closeButton>
+                <Modal.Title  style ={{color:"crimson"}}>Create new group</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit  ={formik.handleSubmit}>
+                    <div class="form-group">
+                    <label for="exampleInputEmail1">Title:</label>
+                    <input type="text" class="form-control" name= "title"
+                     placeholder="Title.." value = {formik.values.title}
+                    onBlur = {formik.onBlur}
+                    onChange = {formik.handleChange}
+                     />
+                     {formik.errors.title && formik.touched.title ? <div style = {{paddingTop:"10px"}}><p style = {{color: 'crimson'}}>{formik.errors.title}</p></div> : null}
+                    </div>
+                    <div class="form-group">
+                    <label for="exampleInputPassword1">Description</label>
+                    <textarea rows= "6" type="text" class="form-control" 
+                    placeholder="Enter group description i.e what the group is about"
+                    name = "description"
+                    value = {formik.values.description}
+                    onChange= {formik.handleChange}
+                    onBlur = {formik.onBlur}
+                    />
+                    {formik.errors.description && formik.touched.description ? <div style = {{paddingTop:"10px"}}><p style = {{color: 'crimson'}}>{formik.errors.description}</p></div> : null}
+                    </div>
+                    <small id="emailHelp" class="form-text text-muted">Adding/Removing users will be available once the group is created</small>
+                    <Button variant="danger" className = "mt-2"  type = "submit">
+                    Create
+                    </Button>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="primary" onClick={handleGroupClose}>
+                    Close
+                </Button>
+                
+                </Modal.Footer>
             </Modal>
         </div>
-
+        
+        </>
     )
 }
 

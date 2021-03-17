@@ -36,4 +36,10 @@ router.post('/search/username',userController.user_search_username)
 router.post('/search/name',userController.user_search_firstname)
 //search user by emailid
 router.post('/search/email',userController.user_search_emailid)
+//add new chat
+router.post('/:id/chats/add', userController.add_new_chat)
+//Get all user chats
+router.get('/:id/chats/', userController.get_all_chats)
+//delete user chat
+router.delete('/:id/chats/delete', userController.delete_user_chat)
 module.exports = router

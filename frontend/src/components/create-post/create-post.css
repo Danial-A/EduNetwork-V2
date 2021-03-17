@@ -35,3 +35,13 @@
 .post-body textarea:focus{
     outline: none;
 }
+.post-heading label{
+    color: crimson;
+    font-size:20px;
+    font-weight: 500;
+}
+.post-body label{
+    color: crimson;
+    font-size: 20px;
+    font-weight: 500;
+}

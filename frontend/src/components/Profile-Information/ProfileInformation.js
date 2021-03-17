@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react'
+import {Modal, Button} from 'react-bootstrap'
 import '../../pages/UserProfile.css'
 import {FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faThumbsUp, faUsers, faTasks} from '@fortawesome/free-solid-svg-icons'
@@ -11,6 +12,11 @@ function ProfileInformation() {
     const [followers, setFollowers] = useState([])
     const [following, setFollowing] = useState([])
     const [posts, setPosts] = useState([])
+
+    //Modal
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false); 
+    const handleShow = () => setShow(true);
 
     const userid = localStorage.getItem('userid')
     useEffect(()=>{
@@ -53,22 +59,45 @@ function ProfileInformation() {
                     <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
                         <Tab eventKey="home" title="Followers">
                         <ol style = {{color:"white"}} className = "follower-section">
-                        {followers.map(f=>(
-                            <li><Link>{f.firstname} {f.lastname}</Link></li>
-                        ))}
+                        {
+                            followers.length > 0 ? (
+                                followers.map(f=>(
+                                    <li style = {{marginLeft :"20px"}}><Link>{f.firstname} {f.lastname}</Link></li>
+                                ))
+                            ) : <div className = "no-followers">You do not have any followers :(</div>
+                        }
                     </ol>
                         
                         </Tab>
                         <Tab eventKey="profile" title="Following">
-                            <ol style = {{color:"white"}} >
-                                {following.map(f=>(
-                                    <li><Link>{f.firstname} {f.lastname}</Link></li>
-                                ))}
+                            <ol style = {{color:"white"}}  className = "follower-section">
+                            {
+                                following.length > 0 ? (
+                                    following.map(f=>(
+                                        <li style = {{marginLeft :"20px"}}><Link>{f.firstname} {f.lastname}</Link></li>
+                                    ))
+                                ) : <div className = "no-followers">You are not following anyone </div>
+                            }
                             </ol>
                         </Tab>
                     </Tabs>
                 </div>
             </div>
+            {/*Modal Section*/}
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={handleClose}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

@@ -1,6 +1,5 @@
 import React, {useState,useEffect} from 'react'
 import NavigationBar from '../components/navigation-bar/userNavbar'
-import io from 'socket.io-client'
 import Footer from '../components/footer-section/footer'
 import axios from 'axios'
 import Post from '../components/post-component/post'
@@ -12,16 +11,12 @@ import './UserProfile.css'
 function UserHomePage() {
     const [posts, setPosts] = useState([])
     const [loading, setLoading] = useState(false);
+    const uid = localStorage.getItem('userid')
     
-    const socket = io('http://localhost:8080')
-    socket.on('connection', ()=>{
-        console.log('I am connected to the backend')
-    })
-   
     useEffect(()=>{
         const fetchPosts = async ()=>{
             setLoading(true);
-            const response = await axios.get('http://localhost:8080/posts/');
+            const response = await axios.get(`http://localhost:8080/posts/${uid}/get/posts`);
             setPosts(response.data);
             setLoading(false)
         }

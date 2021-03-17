@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import UserSearchBox from './userBox'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './userSearch.css'
 
@@ -41,11 +42,11 @@ function UserSearch() {
             </div>
             </div>
         </form>
-        <div className="user-container">
+        <div className="user-container container-fluid">
             {users.length > 0 ? 
                 (
                     users.map((u,index)=>(
-                        <div className = "user-name">{`${index+1})`} {u.username}</div>
+                        <UserSearchBox user = {u}/>
                     ))
                 )
              : <div>No users found</div>}

@@ -1,11 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import Axios from 'axios'
 import Tippy from '@tippy.js/react'
 import { faThumbsUp, faComment, faShare, faSave, faTrash,faEdit,faArchive } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-//import PostComment from '../comments/comment'
 import axios from 'axios'
 import {Modal, Button} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -68,6 +67,7 @@ function Post({posts, loading}) {
             {
               posts.length > 0 ?
                 (posts.map(post=>(
+                  
                   <div key = {post._id} className="post-container container" >
                   <div className="row user-info-row">
                     <div className="col-md-6">
@@ -84,8 +84,8 @@ function Post({posts, loading}) {
                         </div>
                     </div> 
                     <div className="co-md-4">
-                        
-                          {post.author === username ? 
+
+                          {post.author === localStorage.getItem('userid') ? 
                             <div className="delete-icons-row">
                               <Link ><FontAwesomeIcon  icon = {faTrash} onClick = {()=>DeletePost(post._id)}/></Link>
                               <Link><FontAwesomeIcon icon = {faEdit} onClick = {handleShow} /></Link>
@@ -109,8 +109,8 @@ function Post({posts, loading}) {
                     <div className="col-md-6 like-icons-row">
                         <Tippy content = {`${post.likes.length} ${post.likes.length > 1 ? ('Likes'):('Like')}`}><Link><FontAwesomeIcon icon = {faThumbsUp} onClick = {()=> checkLike(post._id)} className = {`${liked ? ('liked'): ('disliked')}`}/></Link></Tippy>
                         <Tippy content = {`${post.comments.length} ${post.comments.length > 1 ? ('Comments'):('Comment')}`}><Link to = {`/user/post/${post._id}`}><FontAwesomeIcon icon = {faComment}/></Link></Tippy>
-                        <Link><FontAwesomeIcon icon = {faShare}/></Link>
-                        <Link><FontAwesomeIcon icon = {faSave}/></Link>
+                        {/*<Link><FontAwesomeIcon icon = {faShare}/></Link>
+                      <Link><FontAwesomeIcon icon = {faSave}/></Link>*/}
                     </div>
                     
                   </div>

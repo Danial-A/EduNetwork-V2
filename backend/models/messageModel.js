@@ -7,11 +7,6 @@ const messageSchema = new schema({
         required:"sender is required",
         trim:true,
     },
-    reciever:{
-        type:String,
-        required:"sender is required",
-        trim:true,
-    },
     roomid:{
         type:String,
         required:true,

@@ -83,7 +83,8 @@ const userSchema = new Schema({
     ]
 
 },{
-    timestamps:true
+    timestamps:true,
+    autoIndex:false
 })
 const Users = mongoose.model("users", userSchema)
 

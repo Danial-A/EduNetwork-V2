@@ -106,11 +106,8 @@ module.exports.following_follower = (req,res)=>{
                     }).catch(err=> res.status(400).json({
                         err,
                         message:"Error adding user to following"
-                    }))
-                    
-                    
-                }
-                
+                    }))   
+                }       
             })
         }
         else {
@@ -321,42 +318,66 @@ module.exports.user_search_emailid = (req,res)=>{
     ]).then(user=> res.json(user)).catch(err=>res.json(err))
 }
 
+//Add Chat
+module.exports.add_new_chat = (req,res)=>{
+    const chatid = req.body.chatid
+    User.findById(req.params.id, "chats", (err,result)=>{
+        if(err) return res.status(400).json({
+            err,
+            message:"Error finding user"
+        })
 
+        else {
+            result.chats.push({chatid})
+            result.save()
+            .then(res=> res.json({
+                res,
+                message:"New chat added"
+            }))
+            .catch(err=> res.status(400).json({
+                err,
+                message:"Error adding new chat for user"
+            }))
+        }
+    })
+}
 
+//get chats for user
+module.exports.get_all_chats = (req,res)=>{
+    User.findById(req.params.id, "chats", (err,user)=>{
+        if(err) return res.status(400).json({
+            err,
+            message:"Error finding user"
+        })
+        else{
+            res.json(user)
+        }
+    })
+}
 
-// User.findOne({"following.username":username},"following.$", (err,result)=>{
-//     if(err) err=>res.json(err)
-//     if(result === null){
-//         //Add user to current user following list
-//         user.following.push(newFollower)
-//         user.save()
-//         //res.json(`Started following ${username}`)
-
-//         //Add user to the target user followers list
-//         User.findOne({"username":username})
-//         .then(targetUser=> {
-//             targetUser.followers.push(newFollower)
-//             targetUser.save()
-//             .then(res.json("Added user to followers and following"))
-//             .catch(err=> res.status(400).json("Error adding user to followers list ",err))
-//         })
-//         .catch(err=> res.status(400).json("Error locating user..",err))
-
-//     }else{
-//     user.following.id(result.following[0]._id).remove()
-//     user.save().catch(err=> res.status(400).json("Error removing follower: ", err))
-//     User.findOne({"username":username}, (err,user)=>{
-//         if(err) res.status(400).json(err)
-//         User.findOne({"followers.username":user.username}, "followers.$", (err,result)=>{
-//             if(err) res.status(400).json(err)
-//             user.followers.id(result.followers[0]._id).remove()
-//             user.save()
-//             .then("User removed from followers and following")
-//             .catch(err=> res.status(400).json("Error removing user from followers and following..", err))
-//         })
-//     })
-    
-//     }
-// })
-
-
+// delete chat for user
+module.exports.delete_user_chat = (req,res)=>{
+    User.findById(req.params.id)
+    .then(user=>{
+        const chat_found = user.chats.filter(u=> u.chatid === req.body.chatid)
+        if(chat_found.length > 0){
+            user.chats.id(chat_found[0]._id).remove()
+            user.save()
+            .then(response=> res.json({
+                response,
+                message:"chat deleted"
+            })).catch(err=>res.status(400).json({
+                err,
+                message:"Error deleting chat"
+            }))
+        }
+        else{
+            return res.json("No chat found")
+            
+        }
+    })
+    .catch(err=>res.status(400).json({
+        err,
+        message:"Error finding user"
+    }))
+}

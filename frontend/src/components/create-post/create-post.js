@@ -10,18 +10,17 @@ function UserPost(TotalPosts) {
     const initialValues = {
         title: '',
         body: '',
-        author: localStorage.getItem('username'),
+        author: localStorage.getItem('userid'),
         postType: 'profile'
     }
-    const onSubmit = values =>{
+    const onSubmit = (values,onSubmitProps) =>{
         axios.post('http://localhost:8080/posts/add', values)
         .then(res =>{
-            // window.alert("Post Added!");
-            console.log(res)
+            window.alert("Post Added!");
             setPosts([...totalPosts])
+            onSubmitProps.resetForm()
         })
         .catch(err =>{ console.log("Error: "+err)})
-        console.log(values)
     }
     const validationSchema = Yup.object({
         title: Yup.string().required('This field is required..'),
@@ -37,24 +36,24 @@ function UserPost(TotalPosts) {
     return (
         <div>
             <div className="container">
-            <h3 style = {{color:'white'}}>Create a new post..</h3>
+            <h3 >Create a new post..</h3>
             <form onSubmit = {formik.handleSubmit}>
                 <div className="row">
                 <div className="col post-heading">
-                    <label htmlFor="postheading" style= {{color:'white'}}>Post Heading:</label>
+                    <label htmlFor="postheading">Post Heading:</label>
                     <input type="text" name="title" id="title" style = {{width: "100%"}}
                         placeholder ="Enter the post title..."
                         onChange = {formik.handleChange}
                         onBlur = {formik.onBlur}
                         value = {formik.values.title}
                     />
-                    {formik.errors.heading && formik.touched.title ? <div style = {{color: 'crimson'}}><p>{formik.errors.heading}</p></div> : null}
+                    {formik.errors.title && formik.touched.title ? <div style = {{color: 'crimson'}}><p>{formik.errors.title}</p></div> : null}
                 </div>
                 </div>
                 <div className="row">
                 <div className="col">
                     <div className="post-body">
-                        <label htmlFor="body" style= {{color:'white'}}>Post Body: </label>
+                        <label htmlFor="body">Post Body: </label>
                         <textarea name="body" id="body" rows="6" 
                         placeholder = "Enter the post description...."
                         onChange = {formik.handleChange}

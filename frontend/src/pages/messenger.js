@@ -19,19 +19,18 @@ function Messenger({match}) {
 
     },[])
 
-    // console.log(user)
-    // const chatid =match.params.id 
-    // console.log(chatid)
+    
+    const chatid =match.params.id 
     return (
         <div className = "container-fluid ">
         <NavigationBar/>
         <div className="container mt-5">
             <div className="row">
                 <div className="col-md-4">
-                    <SideChatPanel chats = {user.chats}/>
+                    <SideChatPanel />
                 </div>
                 <div className="col-md-8">
-                    <MainChatArea/>
+                    <MainChatArea chatid= {chatid}/>
                 </div>
             </div>
         </div>
