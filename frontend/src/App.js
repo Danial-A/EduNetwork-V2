@@ -10,6 +10,7 @@ import YoutubeSearchPage from './pages/YoutubeSearchPage'
 import PostPage from './pages/postPage'
 import Messenger from './pages/messenger'
 import EditorPage from './pages/editorPage';
+import WhiteBoard from './pages/WhiteBoard'
 
 
 
@@ -28,6 +29,7 @@ function App() {
       <Route exact path = "/messenger" component = {Messenger}/>
       <Route exact path = "/messenger/:id" component = {Messenger}/>
       <Route exact path = "/playground" component = {EditorPage}/>
+      <Route exact path = "/whiteboard" component = {WhiteBoard}/>
     </Switch>
   );
 }

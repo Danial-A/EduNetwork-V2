@@ -27,7 +27,7 @@ function Post({posts, loading}) {
         .then(response=> {
 
             if(response.status === 200){
-                // setLiked(true)
+                setLiked(true)
                 if(response.data === 'liked') {
                     setLiked(true)
                    

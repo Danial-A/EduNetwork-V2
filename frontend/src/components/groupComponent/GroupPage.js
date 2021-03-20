@@ -29,7 +29,7 @@ function GroupPage({match}) {
             setGroup(response.data.group)
             setGroupMembers(response.data.group.members)
             setGroupAdmins(response.data.group.admins)
-            console.log(groupMembers)
+            console.log(groupAdmins)
         }).catch(err=>{
             console.log(err)
         })
@@ -50,6 +50,7 @@ function GroupPage({match}) {
             window.alert("Post Added!");
             setTotalPosts([...setTotalPosts])
             onSubmitProps.resetForm()
+            
         })
         .catch(err =>{ console.log("Error: "+err)})
     }
@@ -63,7 +64,9 @@ function GroupPage({match}) {
         onSubmit,
         validationSchema
     })
-    
+    const handleReload = ()=>{
+        window.location.reload(false)
+    }
     return (
         <div className = "container-fluid bottom-margin">
         <NavigationBar/>
@@ -104,7 +107,7 @@ function GroupPage({match}) {
                              </div>
                          </div>
                          <div className="add-post-button">
-                             <button type = "submit" className = "btn btn-danger mb-3">Add Post!</button>
+                             <button type = "submit" className = "btn btn-danger mb-3" onClick = {()=> handleReload()}>Add Post!</button>
                          </div>
                          </form>
                     </div>

@@ -157,7 +157,7 @@ module.exports.update_post = (req,res)=>{
 module.exports.get_following_users_posts = (req,res)=>{
     const userid = req.params.user
     Users.findById(userid, "following",(err,users)=>{
-        if(err) return Response.json({
+        if(err) return res.json({
             err,
             message:"Error retrieving user"
         })

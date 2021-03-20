@@ -11,7 +11,7 @@ function EditorPage() {
     function handleEditorChange(value, event) {
         console.log(value);
       }
-      const [theme,setTheme] = React.useState('light')
+      const [theme,setTheme] = React.useState('vs-dark')
       const toggleTheme = ()=> {
           if(theme === 'light'){
             setTheme('vs-dark')

@@ -50,7 +50,7 @@ module.exports.add_new_user = async (req,res)=>{
        dob
    }); 
    newUser.save()
-   .then(()=> res.json("User sign up successful").redirect('/home'))
+   .then(()=> res.json("User sign up successful").redirect('http://localhost:3000/home'))
    .catch((err)=>{res.status(400).json({error: err, message:"Server failed to respond" })})
 }
 

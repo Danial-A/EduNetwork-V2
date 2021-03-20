@@ -104,5 +104,10 @@ mongoose.connect(process.env.DB_URI, {useNewUrlParser:true, useCreateIndex:true,
         }
     })
 
+    socket.on('canvas-data', (data)=> {
+        socket.broadcast.emit('canvas-data', data);
+        
+    })
+
     })
 })

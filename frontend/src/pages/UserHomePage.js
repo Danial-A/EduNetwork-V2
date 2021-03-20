@@ -32,7 +32,7 @@ function UserHomePage() {
                 <div className="col-md-3">
                     <SearchPanel/>
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-8 mb-5">
                 <Post posts = {posts} loading= {loading} />
                 </div>
             </div>

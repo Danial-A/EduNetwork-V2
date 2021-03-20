@@ -121,6 +121,21 @@ module.exports.get_group_posts = (req,res)=>{
     .catch(err=> res.status(400).json({error:err, message: "error finding the group"}))
 }
 
+//get all users from admin ids
+module.exports.get_all_users_from_admin_id = (req,res)=>{
+    Group.findById(req.params.id, "admins",(err,admins)=>{
+        if(err) res.status(400).json({
+            message:"Error retrieving the admins",
+            error:err
+        })
+
+        else if (admins === null) res.json("Group does not exist")
+        else{
+            
+        }
+    })
+}
+
 //Add admins
 module.exports.add_admins = (req,res)=>{
     const newAdmin = {

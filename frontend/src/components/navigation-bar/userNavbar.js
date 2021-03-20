@@ -21,7 +21,8 @@ function NavigationBar() {
               <Nav.Link href="/Home">Home</Nav.Link>
               <Nav.Link href="/profile">Profile</Nav.Link>
               <Nav.Link href="/messenger">Messenger</Nav.Link>
-              <Nav.Link href="/yt/search">Learn</Nav.Link>
+              <Nav.Link href="/playground">Playground</Nav.Link>
+              <Nav.Link href="/yt/search">Youtube</Nav.Link>
               <Nav.Link href="/sign-in" className = "navbar-signup" onClick = {handleLogout}>Log Out</Nav.Link>
             </Nav>
           </Navbar.Collapse>
