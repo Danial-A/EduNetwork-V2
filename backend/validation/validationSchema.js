@@ -29,7 +29,6 @@ module.exports.userLoginValidation = (data)=>{
        username: Joi.string().required().min(6),
        password: Joi.string().required().min(6),
        emailid: Joi.string().required().email(),
-       chatId: Joi.string().required(),
        dob: Joi.date().required()
     })
     return schema.validate(data)

@@ -43,7 +43,8 @@ module.exports.create_new_chat = (req,res)=>{
                                     seconduser.save()
                                     .then(res.json({
                                         chatid,
-                                        message:"New chat created and added for both users"
+                                        message:"New chat created and added for both users",
+                                        seconduser
                                     })).catch(err=>res.status(400).json({
                                         err,
                                         message:"Error saving chat for recepient"

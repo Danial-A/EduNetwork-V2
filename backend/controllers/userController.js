@@ -38,7 +38,6 @@ module.exports.add_new_user = async (req,res)=>{
    const lastname = req.body.lastname;
    const emailid = req.body.emailid;
    const username = req.body.username;
-   const chatId = req.body.chatId;
    const dob = Date.parse(req.body.dob)
    const newUser = new User({
        firstname,
@@ -46,7 +45,6 @@ module.exports.add_new_user = async (req,res)=>{
        emailid,
        username,
        password: hashedPassword,
-       chatId,
        dob
    }); 
    newUser.save()
