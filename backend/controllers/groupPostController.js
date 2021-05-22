@@ -6,7 +6,7 @@ const {postValidationSchema} = require('../validation/validationSchema')
 const {groupValidationSchema}  = require('../validation/validationSchema')
 //Create new group
 module.exports.create_group =async (req,res)=>{
-    const userid = req.params.user
+    const userid = mongoose.Types.ObjectId(req.params.user)
     const {error} = await groupValidationSchema(req.body)
     if(error){
         res.status(400).send(error.details[0].message)
@@ -114,7 +114,6 @@ module.exports.get_group_posts = (req,res)=>{
                     message:"Error finding the posts for this group"
                 })
             })
-          
         }
     })
     
@@ -123,15 +122,14 @@ module.exports.get_group_posts = (req,res)=>{
 
 //get all users from admin ids
 module.exports.get_all_users_from_admin_id = (req,res)=>{
-    Group.findById(req.params.id, "admins",(err,admins)=>{
+    Group.findById(req.params.id,(err,group)=>{
         if(err) res.status(400).json({
             message:"Error retrieving the admins",
             error:err
         })
-
-        else if (admins === null) res.json("Group does not exist")
+        else if (group === null) res.json("Group does not exist")
         else{
-            
+            res.json(group)
         }
     })
 }

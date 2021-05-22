@@ -1,10 +1,12 @@
 import React from 'react'
 
-function VideoSection() {
+function VideoSection(url) {
+    console.log(url)
     return (
-        <div>
-            <h3>Video Section</h3>
-        </div>
+      
+          url ?  <iframe src={url} frameborder="0" allowFullScreen title="Video player"></iframe> : <h3>No video selected</h3>
+          
+      
     )
 }
 

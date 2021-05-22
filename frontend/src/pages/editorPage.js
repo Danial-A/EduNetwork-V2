@@ -8,6 +8,7 @@ import OutputSection from '../components/editor-components/outputsection'
 import VideoSection from '../components/editor-components/videosection'
 
 function EditorPage() {
+    console.log(window.location.pathname)
     function handleEditorChange(value, event) {
         console.log(value);
       }

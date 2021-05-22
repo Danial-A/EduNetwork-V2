@@ -14,12 +14,14 @@ const groupModel = new schema({
     },
     admins:[
         {
-            userid:{
-                type:String,
-                required:true,
-                unique:true,
-                sparse:true
-            }
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'users'
+            // userid:{
+            //     type:String,
+            //     required:true,
+            //     unique:true,
+            //     sparse:true
+            // }
         }
     ],
     posts: [
